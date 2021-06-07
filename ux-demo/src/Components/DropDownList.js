@@ -5,13 +5,14 @@ const DropDownList = ({list}) => {
   const [activeItem, setActiveItem] = useState(null)
 
   return (
-    <div>
+    <div >
       {list && list.map((item, key) => <div key={key}>
-          <div onClick={() => setActiveItem(activeItem === key ? null : key)}>{item.name}</div>
-          {key === activeItem && <span>
+          <div className = "countryname" onClick={() => setActiveItem(activeItem === key ? null : key)}>{item.name}</div>
+          {key === activeItem && <span className = "countrydrop">
             <br/> capital - {item.capital},
             <br/> currency - {item.currency},
             <br/> language - {item.language}
+            <img src={item.img} alt={item.capital}></img>
           </span>}
         </div>
       )}
