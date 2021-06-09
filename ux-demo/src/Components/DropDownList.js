@@ -12,7 +12,7 @@ const DropDownList = ({list}) => {
             <br/> capital - {item.capital},
             <br/> currency - {item.currency},
             <br/> language - {item.language}
-            <img src={item.img} alt={item.capital}></img>
+            <img src={item.img} alt={item.capital} />
           </span>}
         </div>
       )}

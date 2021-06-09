@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 //popupbox, content, buttons and useState go together
 
-const Popup = props => {
-    console.log(props);
+const PopupContent = props => {
+
     return (
       <div className="popup-box">
         <div className="box">
@@ -16,32 +16,32 @@ const Popup = props => {
   };
 
 
-  function PopupMsc() {
+  function Popup({data : {btnValue, paragraph, title, imgSrc}}) {
     const [isOpen, setIsOpen] = useState(false);
-   
-    const togglePopup = () => {
+
+    const togglePopup = useCallback(() => {
       setIsOpen(!isOpen);
-    }
+    }, [setIsOpen, isOpen])
    
     return <div>
-     
       <input
         type="button"
-        value="Come and visit Moscow"
+        value={btnValue}
         onClick={togglePopup}
       />
-      <p>Moscow is the Capital of Russia</p>
-      {isOpen && <Popup
-        content={<div><h1 className = "poptext">"Welcome to Moscow"</h1>
-        <img src="https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg" ></img></div>}
+      <p>{paragraph}</p>
+      {isOpen && <PopupContent
+        content={
+          <div>
+            <h1 className = "poptext">{title}</h1>
+            <img src={imgSrc} alt={title}/>
+          </div>
+        }
         handleClose={togglePopup}
       />}
-     
-
-
 
     </div>
   }
  
   
-  export default PopupMsc;
+  export default Popup;
