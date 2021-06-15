@@ -1,13 +1,10 @@
-import './App.css';
-import DropDownList from './Components/DropDownList';
-import Popup from './Components/Popup';
-import React, {useEffect, useState} from "react"
-
-const countriesList = [
-  {name: "Russia", capital: "Moscow", currency: "RUB", language : "russian", img:"https://www.elitetraveler.com/wp-content/uploads/2012/12/RAI5-462x346.jpg"},
-  {name: "Finland", capital: "Helsinki", currency: "EUR", language : "Finnish", img: "https://media-cdn.tripadvisor.com/media/photo-s/13/d7/93/fe/helsinki-by-night.jpg"},
-  {name: "Great Britain", capital: "London", currency: "GBP", language : "English",img:"https://www.sftrips.com/wp-content/uploads/2016/03/z8888.jpg"}
-]
+import "./App.css";
+import DropDownList from "./Components/DropDownList";
+import Popup from "./Components/Popup";
+import React, { useEffect, useState } from "react";
+import DataTable from "./Components/DataTable";
+import { countriesList } from "./countriesList";
+import SkinChange from "./Components/Skin";
 
 // const popUpList = [
 //   {"btnValue" : "Come and visit Moscow", "paragraph" : "Moscow is the Capital of Russia", "title": "Welcome to Moscow", "imgSrc": "https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg"},
@@ -16,25 +13,35 @@ const countriesList = [
 // ]
 
 function App() {
-  const [popUpList, setPopUpList] = useState([])
+  const [popUpList, setPopUpList] = useState([]);
+  const [color, setTextColor] = useState("black");
+  const [bgColor, setBgColor] = useState("#aadae7");
+  let styles = { backgroundColor: bgColor, color: color };
 
+  const changeColor = () => {
+    setTextColor(color === "black" ? "#aadae7" : "black");
+    setBgColor(bgColor === "#aadae7" ? "#2f384a" : "#aadae7");
+  };
 
   useEffect(() => {
-
-    fetch('https://gist.githubusercontent.com/Greyewi/87daf86f2a2ffe765ce31d68ccf65679/raw/17833e18c22e0da5700d86ed417909e01efc5356/countries1.json')
+    fetch(
+      "https://gist.githubusercontent.com/Greyewi/87daf86f2a2ffe765ce31d68ccf65679/raw/17833e18c22e0da5700d86ed417909e01efc5356/countries1.json"
+    )
       .then((data) => data.json())
       .then((dataJson) => {
-        setPopUpList(dataJson)
-      })
-
-  }, [setPopUpList])
+        setPopUpList(dataJson);
+      });
+  }, [setPopUpList]);
 
   return (
-    <div className="App">
+    <div style={styles} className="App">
       <header className="App-header">
-        <DropDownList list={countriesList}/>
-        {popUpList.map((item, key) => <Popup data={item} key={key + item.title}/>)}
-
+        <DropDownList list={countriesList} />
+        {popUpList.map((item, key) => (
+          <Popup data={item} key={key + item.title} />
+        ))}
+        <DataTable />
+        <SkinChange onClick={changeColor} />
       </header>
     </div>
   );

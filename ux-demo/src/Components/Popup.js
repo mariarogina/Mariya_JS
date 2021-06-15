@@ -7,7 +7,7 @@ const PopupContent = props => {
     return (
       <div className="popup-box">
         <div className="box">
-          <span className="close-icon" onClick={props.handleClose}>x</span>
+          <span style={{color:"red"}} className="close-icon" onClick={props.handleClose}>X</span>
           {props.content}
         </div>
       </div>
@@ -19,9 +19,9 @@ const PopupContent = props => {
   function Popup({data : {btnValue, paragraph, title, imgSrc}}) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const togglePopup = useCallback(() => {
+    const togglePopup = () => {
       setIsOpen(!isOpen);
-    }, [setIsOpen, isOpen])
+    }
    
     return <div>
       <input
