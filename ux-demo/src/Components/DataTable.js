@@ -13,22 +13,23 @@ const rows = countriesList.map((item) =>
 export default function DataTable() {
   return (
     <div>
-      <table className="table" style={{ color: "inherit", borderColor: 'green', }}>
+    <h1 style = {{color:"white"}}>The table of Three Countries</h1>
+      <table className="table" style={{ color: "inherit",  }}>
         <thead >
           <tr>
-            <th  scope="col" align="right">
+            <th  scope="col" align="center">
               No.
             </th>
-            <th  scope="col" align="right">
+            <th  scope="col" align="center">
               Name
             </th>
-            <th  scope="col" align="right">
+            <th  scope="col" align="center">
               Capital
             </th>
-            <th  scope="col" align="right">
+            <th  scope="col" align="center">
               Language
             </th>
-            <th scope="col" align="right">
+            <th scope="col" align="center">
               Currency
             </th>
           </tr>
@@ -39,10 +40,10 @@ export default function DataTable() {
             <tr key={row.name}>
               <th scope="row">{index}</th>
 
-              <td align="right">{row.name}</td>
-              <td align="right">{row.capital}</td>
-              <td align="right">{row.language}</td>
-              <td align="right">{row.currency}</td>
+              <td align="center">{row.name}</td>
+              <td align="center">{row.capital}</td>
+              <td align="center">{row.language}</td>
+              <td align="center">{row.currency}</td>
             </tr>
           ))}
         </tbody>

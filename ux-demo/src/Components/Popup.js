@@ -7,7 +7,7 @@ const PopupContent = props => {
     return (
       <div className="popup-box">
         <div className="box">
-          <span style={{color:"red"}} className="close-icon" onClick={props.handleClose}>X</span>
+          <span style={{color:"#ab0075", fontWeight:'750'}} className="close-icon" onClick={props.handleClose}>X</span>
           {props.content}
         </div>
       </div>
@@ -24,11 +24,12 @@ const PopupContent = props => {
     }
    
     return <div>
-      <input
-        type="button"
-        value={btnValue}
+      <button type="button"
+       class="btn btn-primary"
+       style={{backgroundColor: '#ab0075', border:'none', borderRadius:'8px'}}
         onClick={togglePopup}
-      />
+  >{btnValue}</button>
+        
       <p>{paragraph}</p>
       {isOpen && <PopupContent
         content={
