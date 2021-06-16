@@ -5,6 +5,10 @@ import React, { useEffect, useState } from "react";
 import DataTable from "./Components/DataTable";
 import { countriesList } from "./countriesList";
 import SkinChange from "./Components/Skin";
+import CountryTable from "./Components/CountryTable";
+import Footer from "./Components/Footer";
+import AppNavBar from "./Components/NavBar";
+import NavBar2 from "./Components/NavBar2";
 
 // const popUpList = [
 //   {"btnValue" : "Come and visit Moscow", "paragraph" : "Moscow is the Capital of Russia", "title": "Welcome to Moscow", "imgSrc": "https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg"},
@@ -12,20 +16,23 @@ import SkinChange from "./Components/Skin";
 //   {"btnValue" : "Come and visit London", "paragraph" : "London is the Capital of Great Britain", "title": "Welcome to London", "imgSrc": "https://www.overseasattractions.com/wp-content/uploads/2018/08/london-at-night.jpg"}
 // ]
 
+
 function App() {
   const [popUpList, setPopUpList] = useState([]);
   const [color, setTextColor] = useState("black");
-  const [bgColor, setBgColor] = useState("#aadae7");
+  const [bgColor, setBgColor] = useState("#6C8B93");
+  
+ 
   let styles = { backgroundColor: bgColor, color: color };
 
   const changeColor = () => {
     setTextColor(color === "black" ? "#aadae7" : "black");
-    setBgColor(bgColor === "#aadae7" ? "#2f384a" : "#aadae7");
+    setBgColor(bgColor === "#6C8B93" ? "black" : "#6C8B93");
   };
 
   useEffect(() => {
     fetch(
-      "https://gist.githubusercontent.com/Greyewi/87daf86f2a2ffe765ce31d68ccf65679/raw/17833e18c22e0da5700d86ed417909e01efc5356/countries1.json"
+      "https://gist.githubusercontent.com/mariarogina/8ec0844c46fc655d6ca96a098c987e28/raw/9e9a7669a73c9319b92cee6cf02ed5a7e080c77f/myCountries.json"
     )
       .then((data) => data.json())
       .then((dataJson) => {
@@ -35,13 +42,18 @@ function App() {
 
   return (
     <div style={styles} className="App">
+    <SkinChange onClick={changeColor} />
+    <NavBar2/>
       <header className="App-header">
         <DropDownList list={countriesList} />
         {popUpList.map((item, key) => (
           <Popup data={item} key={key + item.title} />
         ))}
         <DataTable />
-        <SkinChange onClick={changeColor} />
+        <br/>
+        <CountryTable/>
+        <Footer/>
+        
       </header>
     </div>
   );
