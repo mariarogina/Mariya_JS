@@ -8,6 +8,7 @@ import SkinChange from "./Components/Skin";
 import CountryTable from "./Components/CountryTable";
 import Footer from "./Components/Footer";
 import AppNavBar from "./Components/NavBar";
+import NavBar2 from "./Components/NavBar2";
 
 // const popUpList = [
 //   {"btnValue" : "Come and visit Moscow", "paragraph" : "Moscow is the Capital of Russia", "title": "Welcome to Moscow", "imgSrc": "https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg"},
@@ -42,7 +43,7 @@ function App() {
   return (
     <div style={styles} className="App">
     <SkinChange onClick={changeColor} />
-    <AppNavBar/>
+    <NavBar2/>
       <header className="App-header">
         <DropDownList list={countriesList} />
         {popUpList.map((item, key) => (
