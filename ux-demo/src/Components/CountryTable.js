@@ -1,14 +1,15 @@
-import React from "react";
+import React, {useCallback} from "react"
 import { useState, useEffect } from "react";
 
-function createData(name, capital, population) {
-  return { name, capital, population };
+function createData(numericCode, name, capital, population) {
+  return {numericCode, name, capital, population };
 }
 
 
-
 export default function CountryTable() {
-  const [countryApiList, setList] = useState(null);
+  const [rowList, setRowList] = useState(null);
+  const initialForm = {numericCode: '', name: 'Country', capital: '', population: 0}
+  const [formData, setFormData] = useState(initialForm);
 
   useEffect(() => {
     fetch("https://restcountries.eu/rest/v2/all")
@@ -16,22 +17,63 @@ export default function CountryTable() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        setList(data);
+        setRowList(data.slice(20, 35).map((item) => createData(item.numericCode, item.name, item.capital, item.population)))
       });
   }, []);
 
-  if (!countryApiList){
+
+  const handleAddCountry = useCallback(() => {
+    setRowList(prevList => ([...prevList, formData]))
+    setFormData(initialForm)
+  }, [setRowList, setFormData, formData])
+
+  if (!rowList){
     return <div>Still Loading</div>;
   }
 
-  const rows = countryApiList.slice(20, 35).map((item) =>
-  createData(item.name, item.capital, item.population)
-);
 
   return (
     <div >
    <h1 style = {{color:"#ab0075"}}>The Table of Countries</h1>
+      <div>
+        <label>
+          numericCode
+          <input
+            type="text"
+            placeholder="numericCode"
+            value={formData.numericCode}
+            onChange={(event) => setFormData(prevState => ({...prevState, numericCode: event.target.value}))}
+          />
+        </label>
+        <label>
+          name
+          <input
+            type="text"
+            placeholder="name"
+            value={formData.name}
+            onChange={(event) => setFormData(prevState => ({...prevState, name: event.target.value}))}
+          />
+        </label>
+        <label>
+          capital
+          <input
+            type="text"
+            placeholder="capital"
+            value={formData.capital}
+            onChange={(event) => setFormData(prevState => ({...prevState, capital: event.target.value}))}
+          />
+        </label>
+        <label>
+          population
+          <input
+            type="number"
+            placeholder="population"
+            value={formData.population}
+            onChange={(event) => setFormData(prevState => ({...prevState, population: event.target.value}))}
+          />
+        </label>
+        <button onClick={handleAddCountry}>Add +</button>
+      </div>
       <table
         className="table"
         style={{ color: "inherit",  }}
@@ -55,9 +97,9 @@ export default function CountryTable() {
         </thead>
 
         <tbody>
-          {rows.map((row, index) => (
-            <tr key={row.name}>
-              <th scope="row">{index}</th>
+          {rowList.map(row => (
+            <tr key={row.numericCode}>
+              <th scope="row">{row.numericCode}</th>
 
               <td align="center">{row.name}</td>
               <td align="center">{row.capital}</td>
