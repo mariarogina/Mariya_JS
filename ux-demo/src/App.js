@@ -2,7 +2,7 @@ import "./App.css";
 import DropDownList from "./Components/DropDownList";
 import Popup from "./Components/Popup";
 import React, { useEffect, useState } from "react";
-import DataTable from "./Components/DataTable";
+import DataTable from "./Components/DataTable copy";
 import { countriesList } from "./countriesList";
 import SkinChange from "./Components/Skin";
 import CountryTable from "./Components/CountryTable";
