@@ -108,7 +108,8 @@ export default function CountryTable() {
         </label> 
 
         <br/>
-        <button onClick={handleAddCountry}>Add +</button>
+        <br/>
+        <button type="button" className="btn btn-primary" style={{padding:'10px', minwidth:"100px"}} onClick={handleAddCountry}>Add a country</button>
       </div>
       <br/>
       <table className="table" style={{ color: "inherit" }}>

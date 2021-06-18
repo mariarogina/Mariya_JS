@@ -9,6 +9,7 @@ import CountryTable from "./Components/CountryTable";
 import Footer from "./Components/Footer";
 import AppNavBar from "./Components/NavBar";
 import NavBar2 from "./Components/NavBar2";
+ import  FetchCat from "./Components/Cat";
 
 // const popUpList = [
 //   {"btnValue" : "Come and visit Moscow", "paragraph" : "Moscow is the Capital of Russia", "title": "Welcome to Moscow", "imgSrc": "https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg"},
@@ -52,6 +53,7 @@ function App() {
         <DataTable />
         <br/>
         <CountryTable/>
+        <FetchCat/>
         <Footer/>
         
       </header>
