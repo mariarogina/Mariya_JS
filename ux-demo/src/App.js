@@ -2,13 +2,14 @@ import "./App.css";
 import DropDownList from "./Components/DropDownList";
 import Popup from "./Components/Popup";
 import React, { useEffect, useState } from "react";
-import DataTable from "./Components/DataTable";
+import DataTable from "./Components/DataTable copy";
 import { countriesList } from "./countriesList";
 import SkinChange from "./Components/Skin";
 import CountryTable from "./Components/CountryTable";
 import Footer from "./Components/Footer";
 import AppNavBar from "./Components/NavBar";
 import NavBar2 from "./Components/NavBar2";
+ import  FetchCat from "./Components/Cat";
 
 // const popUpList = [
 //   {"btnValue" : "Come and visit Moscow", "paragraph" : "Moscow is the Capital of Russia", "title": "Welcome to Moscow", "imgSrc": "https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg"},
@@ -52,6 +53,7 @@ function App() {
         <DataTable />
         <br/>
         <CountryTable/>
+        <FetchCat/>
         <Footer/>
         
       </header>

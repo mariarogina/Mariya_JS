@@ -1,14 +1,18 @@
-import React, {useCallback} from "react"
+import React, { useCallback } from "react";
 import { useState, useEffect } from "react";
 
 function createData(numericCode, name, capital, population) {
-  return {numericCode, name, capital, population };
+  return { numericCode, name, capital, population };
 }
-
 
 export default function CountryTable() {
   const [rowList, setRowList] = useState(null);
-  const initialForm = {numericCode: '', name: 'Country', capital: '', population: 0}
+  const initialForm = {
+    numericCode: "",
+    name: "Country",
+    capital: "",
+    population: 0,
+  };
   const [formData, setFormData] = useState(initialForm);
 
   useEffect(() => {
@@ -17,24 +21,34 @@ export default function CountryTable() {
         return response.json();
       })
       .then((data) => {
-        setRowList(data.slice(20, 35).map((item) => createData(item.numericCode, item.name, item.capital, item.population)))
+        setRowList(
+          data
+            .slice(20, 35)
+            .map((item) =>
+              createData(
+                item.numericCode,
+                item.name,
+                item.capital,
+                item.population
+              )
+            )
+        );
       });
   }, []);
 
-
   const handleAddCountry = useCallback(() => {
-    setRowList(prevList => ([...prevList, formData]))
-    setFormData(initialForm)
-  }, [setRowList, setFormData, formData])
+    setRowList((prevList) => [...prevList, formData]);
+    setFormData(initialForm);
+  }, [setRowList, setFormData, formData]);
 
-  if (!rowList){
+  if (!rowList) {
     return <div>Still Loading</div>;
   }
 
-
   return (
-    <div >
-   <h1 style = {{color:"#ab0075"}}>The Table of Countries</h1>
+    <div style={{ paddingTop: "50px" }}>
+      <h1 style={{ color: "#ab0075" }}>The Table of Countries</h1>
+      <br />
       <div>
         <label>
           numericCode
@@ -42,7 +56,12 @@ export default function CountryTable() {
             type="text"
             placeholder="numericCode"
             value={formData.numericCode}
-            onChange={(event) => setFormData(prevState => ({...prevState, numericCode: event.target.value}))}
+            onChange={(event) =>
+              setFormData((prevState) => ({
+                ...prevState,
+                numericCode: event.target.value,
+              }))
+            }
           />
         </label>
         <label>
@@ -51,7 +70,12 @@ export default function CountryTable() {
             type="text"
             placeholder="name"
             value={formData.name}
-            onChange={(event) => setFormData(prevState => ({...prevState, name: event.target.value}))}
+            onChange={(event) =>
+              setFormData((prevState) => ({
+                ...prevState,
+                name: event.target.value,
+              }))
+            }
           />
         </label>
         <label>
@@ -60,7 +84,12 @@ export default function CountryTable() {
             type="text"
             placeholder="capital"
             value={formData.capital}
-            onChange={(event) => setFormData(prevState => ({...prevState, capital: event.target.value}))}
+            onChange={(event) =>
+              setFormData((prevState) => ({
+                ...prevState,
+                capital: event.target.value,
+              }))
+            }
           />
         </label>
         <label>
@@ -69,15 +98,21 @@ export default function CountryTable() {
             type="number"
             placeholder="population"
             value={formData.population}
-            onChange={(event) => setFormData(prevState => ({...prevState, population: event.target.value}))}
+            onChange={(event) =>
+              setFormData((prevState) => ({
+                ...prevState,
+                population: event.target.value,
+              }))
+            }
           />
-        </label>
-        <button onClick={handleAddCountry}>Add +</button>
+        </label> 
+
+        <br/>
+        <br/>
+        <button type="button" className="btn btn-primary" style={{padding:'10px', minwidth:"100px"}} onClick={handleAddCountry}>Add a country</button>
       </div>
-      <table
-        className="table"
-        style={{ color: "inherit",  }}
-      >
+      <br/>
+      <table className="table" style={{ color: "inherit" }}>
         <thead>
           <tr>
             <th scope="col" align="center">
@@ -92,19 +127,17 @@ export default function CountryTable() {
             <th scope="col" align="center">
               Population
             </th>
-            
           </tr>
         </thead>
 
         <tbody>
-          {rowList.map(row => (
+          {rowList.map((row) => (
             <tr key={row.numericCode}>
               <th scope="row">{row.numericCode}</th>
 
               <td align="center">{row.name}</td>
               <td align="center">{row.capital}</td>
               <td align="center">{row.population}</td>
-              
             </tr>
           ))}
         </tbody>
