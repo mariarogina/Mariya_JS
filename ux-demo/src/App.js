@@ -10,6 +10,9 @@ import Footer from "./Components/Footer";
 import AppNavBar from "./Components/NavBar";
 import NavBar2 from "./Components/NavBar2";
  import  FetchCat from "./Components/Cat";
+ import FetchCountry from "./Components/Country";
+import { SortedTable }from './Components/SortedTable';
+import { ApiTable } from './Components/ApiTable';
 
 // const popUpList = [
 //   {"btnValue" : "Come and visit Moscow", "paragraph" : "Moscow is the Capital of Russia", "title": "Welcome to Moscow", "imgSrc": "https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg"},
@@ -25,6 +28,45 @@ function App() {
   
  
   let styles = { backgroundColor: bgColor, color: color };
+
+  //tables
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "Company",
+        accessor: "company" // accessor is the "key" in the data
+      },
+      {
+        Header: "Contact",
+        accessor: "contact"
+      },
+      {
+        Header: "Country",
+        accessor: "country"
+      }
+    ],
+    []
+  );
+const data = React.useMemo(
+    () => [
+      {
+        company: "Alfred",
+        contact: "Maria Anders",
+        country: "Germany"
+      },
+      {
+        company: "Centro comercial Moctezuma",
+        contact: "Francisco Chang",
+        country: "Mexico"
+      },
+      {
+        company: "Ernst Handel",
+        contact: "Roland Mendel	",
+        country: "Austria"
+      }
+    ],
+    [])
+    //tables end
 
   const changeColor = () => {
     setTextColor(color === "black" ? "#aadae7" : "black");
@@ -53,8 +95,13 @@ function App() {
         <DataTable />
         <br/>
         <CountryTable/>
-        <FetchCat/>
+        <FetchCountry/>
+        <SortedTable columns={columns} data={data}/>
+      <br/>
+      <br/>
+      <ApiTable columns={columns} data={data}/>
         <Footer/>
+        
         
       </header>
     </div>
