@@ -1,14 +1,14 @@
 import "./App.css";
-import DropDownList from "./Components/DropDownList";
-import Popup from "./Components/Popup";
+// import DropDownList from "./Components/DropDownList";
+// import Popup from "./Components/Popup";
 import React, { useEffect, useState } from "react";
 import DataTable from "./Components/DataTable copy";
 import { countriesList } from "./countriesList";
-import SkinChange from "./Components/Skin";
+// import SkinChange from "./Components/Skin";
 import CountryTable from "./Components/CountryTable";
-import Footer from "./Components/Footer";
-import AppNavBar from "./Components/NavBar";
-import NavBar2 from "./Components/NavBar2";
+// import Footer from "./Components/Footer";
+// import AppNavBar from "./Components/NavBar";
+// import NavBar2 from "./Components/NavBar2";
  import  FetchCat from "./Components/Cat";
  import FetchCountry from "./Components/Country";
 import { SortedTable }from './Components/SortedTable';
@@ -37,8 +37,10 @@ function App() {
         accessor: "company" // accessor is the "key" in the data
       },
       {
-        Header: "Contact",
-        accessor: "contact"
+        Header: () => {
+          return <div>Contact</div>
+        },
+        accessor: "contact",
       },
       {
         Header: "Country",
@@ -85,13 +87,13 @@ const data = React.useMemo(
 
   return (
     <div style={styles} className="App">
-    <SkinChange onClick={changeColor} />
-    <NavBar2/>
+    {/*<SkinChange onClick={changeColor} />*/}
+    {/*<NavBar2/>*/}
       <header className="App-header">
-        <DropDownList list={countriesList} />
-        {popUpList.map((item, key) => (
-          <Popup data={item} key={key + item.title} />
-        ))}
+        {/*<DropDownList list={countriesList} />*/}
+        {/*{popUpList.map((item, key) => (*/}
+        {/*  <Popup data={item} key={key + item.title} />*/}
+        {/*))}*/}
         <DataTable />
         <br/>
         <CountryTable/>
@@ -100,7 +102,7 @@ const data = React.useMemo(
       <br/>
       <br/>
       <ApiTable columns={columns} data={data}/>
-        <Footer/>
+        {/*<Footer/>*/}
         
         
       </header>

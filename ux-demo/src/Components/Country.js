@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react"
 
 function createData(name, capital, languages, flag) {
   return { name, capital, languages, flag };
@@ -33,7 +33,7 @@ export default function FetchCountry() {
 
 function Country(props) {
  
-  var style = {
+  const style = {
     border: "2px solid #B0B0B0",
     width: "650px",
     borderRadius: "20px",
@@ -44,7 +44,7 @@ function Country(props) {
     color:"#2c4e85"
   };
 
-  var picStyle = {
+  const picStyle = {
     maxWidth:'300px'
   };
 
@@ -66,7 +66,7 @@ function RandomSelector(props) {
    const [randItem, setRandItem] = useState(rowList[1]);
 
   const returnCountry = () => {
-    var i = parseInt(Math.random() * (rowList.length - 1));
+    const i = Math.random() * (rowList.length - 1);
     setRandItem(rowList[i]);
   };
 
