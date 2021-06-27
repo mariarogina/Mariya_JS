@@ -4,7 +4,7 @@ import Popup from "./Components/interactions/Popup";
 import React, { useEffect, useState } from "react";
 import DataTable from "./Components/tables/DataTable copy";
 import { countriesList } from "./countriesList";
-import SkinChange from "./Components/Skin";
+
 import CountryTable from "./Components/tables/CountryTable";
 import { SortedTable }from './Components//tables/SortedTable';
 import { ApiTable } from './Components/tables/ApiTable';

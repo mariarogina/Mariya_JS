@@ -1,3 +1,5 @@
+
+  
 import React, { useState, useEffect, useCallback } from "react";
 
 function createData(name, capital, language, currency) {
@@ -6,6 +8,7 @@ function createData(name, capital, language, currency) {
 
 export default function DataTable() {
   const [rowList, setRowList] = useState([]);
+  const [isUpDirection, setIsUpDirection] = useState(true);
   const initialForm = { name: "", capital: "", language: "", currency: "" };
   const [formData, setFormData] = useState(initialForm);
 
@@ -13,6 +16,25 @@ export default function DataTable() {
     setRowList((prevList) => [...prevList, formData]);
     setFormData(initialForm);
   }, [setRowList, setFormData, formData]);
+
+  const handleSortByField = useCallback((field) => {
+    const sortedRowList = rowList.sort((a, b) => {
+      if(a[field] > b[field]) {
+        return isUpDirection ? 1 : -1
+      } else if(a[field] < b[field]) {
+        return isUpDirection ? -1 : 1
+      } else {
+        return 0
+      }
+    })
+
+    setRowList(sortedRowList.map((item) =>
+      createData(item.name, item.capital, item.language, item.currency)
+    ))
+
+    setIsUpDirection(!isUpDirection)
+
+  }, [rowList, setRowList, setIsUpDirection, isUpDirection])
 
   useEffect(() => {
     fetch(
@@ -29,13 +51,11 @@ export default function DataTable() {
           )
         );
       });
-  }, []);
+  }, [setRowList, createData]);
 
   if (!rowList) {
     return <div>Still Loading</div>;
   }
-
-  console.log(rowList);
 
   return (
     <div style={{ paddingTop: "50px" }}>
@@ -112,16 +132,16 @@ export default function DataTable() {
               <th scope="col" align="center">
                 No.
               </th>
-              <th scope="col" align="center">
+              <th scope="col" align="center" onClick={() => handleSortByField("name")}>
                 Name
               </th>
-              <th scope="col" align="center">
+              <th scope="col" align="center" onClick={() => handleSortByField("capital")}>
                 Capital
               </th>
-              <th scope="col" align="center">
+              <th scope="col" align="center" onClick={() => handleSortByField("language")}>
                 Language
               </th>
-              <th scope="col" align="center">
+              <th scope="col" align="center" onClick={() => handleSortByField("currency")}>
                 Currency
               </th>
             </tr>
