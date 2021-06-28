@@ -1,14 +1,11 @@
 import "./App.css";
-// import DropDownList from "./Components/DropDownList";
-// import Popup from "./Components/Popup";
+
 import React, { useEffect, useState } from "react";
 import DataTable from "./Components/DataTable copy";
 import { countriesList } from "./countriesList";
-// import SkinChange from "./Components/Skin";
+
 import CountryTable from "./Components/CountryTable";
-// import Footer from "./Components/Footer";
-// import AppNavBar from "./Components/NavBar";
-// import NavBar2 from "./Components/NavBar2";
+
  import  FetchCat from "./Components/Cat";
  import FetchCountry from "./Components/Country";
 import { SortedTable }from './Components/SortedTable';
