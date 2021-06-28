@@ -7,6 +7,11 @@
   pointer-events: none;
 }
 
+.inpField {
+  max-width:220px;
+  margin: 10px 10px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -14,19 +19,55 @@
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  
 }
 
 .App-link {
   color: #61dafb;
 }
+/*
+.App table {
+ border-top:1px solid blue !important;
+ border-bottom: 1px solid blue !important;
+
+}
+.table td{
+  border-top:1px solid blue !important;
+  border-bottom: 1px solid blue !important;
+ 
+ }
+ .table th{
+  border-top:1px solid blue !important;
+  border-bottom: 1px solid blue !important;
+ }
+
+ table > thead > th{
+  border-top:1px solid blue !important;
+  border-bottom: 1px solid blue !important;
+ 
+ }
+
+ .table thead th{
+  border-top:1px solid blue !important;
+  border-bottom: 1px solid blue !important;
+ 
+ }
+table > thead > tr > th{
+  border-top:1px solid blue;
+ border-bottom: 1px solid blue;}
+
+table > tbody > tr > td{
+  border-top:1px solid blue;
+ border-bottom: 1px solid blue;}
+ table > tbody > tr > th{
+  border-top:1px solid blue;
+ border-bottom: 1px solid blue;}*/
 
 @keyframes App-logo-spin {
   from {
@@ -66,7 +107,10 @@
 }
 
 .countryname {
-  color:red
+  color:#ab0075;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size:1.8rem
 }
 
 .countrydrop {
