@@ -8,8 +8,9 @@ import { countriesList } from "./countriesList";
 import CountryTable from "./Components/tables/CountryTable";
 import { SortedTable } from "./Components//tables/SortedTable";
 import { ApiTable } from "./Components/tables/ApiTable";
-import SimpleCat from "./Components/tables/SimpleCat";
+
 import AdMock from "./Components/tables/EditMock";
+import CatMock from "./Components/tables/CatMock";
 
 // const popUpList = [
 //   {"btnValue" : "Come and visit Moscow", "paragraph" : "Moscow is the Capital of Russia", "title": "Welcome to Moscow", "imgSrc": "https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg"},
@@ -87,6 +88,7 @@ function App() {
           <Popup data={item} key={key + item.title} />
         ))}
         <AdMock />
+        <CatMock />
 
         <DataTable />
         <br />
@@ -96,7 +98,8 @@ function App() {
         <br />
         <br />
         <ApiTable columns={columns} data={data} />
-        <SimpleCat />
+        
+        
       </header>
     </div>
   );
