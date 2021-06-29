@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-function createData( name, description, temperament, image) {
-  return { name, description, temperament, image};
+function createData( name, intelligence, temperament, image) {
+  return { name, intelligence, temperament, image};
 }
 
 export default function SimpleCat() {
@@ -9,7 +9,6 @@ export default function SimpleCat() {
   const [isUpDirection, setIsUpDirection] = useState(true);
  
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchTermCity, setSearchTermCity] = useState("");
 
   const handleSortByField = useCallback(
     (field) => {
@@ -28,9 +27,9 @@ export default function SimpleCat() {
           createData(
             
             item.name,
-            item.description,
+            item.intelligence,
             item.temperament,
-            item.image?.url
+            item.image
           )
         )
       );
@@ -44,9 +43,7 @@ export default function SimpleCat() {
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  const handleChangeCity = (event) => {
-    setSearchTermCity(event.target.value);
-  };
+  
 
 
   useEffect(() => {
@@ -64,7 +61,7 @@ export default function SimpleCat() {
             createData(
               
               item.name,
-              item.description,
+              item.intelligence,
               item.temperament,
               item.image?.url
             )
@@ -74,8 +71,8 @@ export default function SimpleCat() {
   }, [setRowList, createData]);
 
   const filteredRowList = rowList.filter((item) =>
-  item.name.toLowerCase().includes(searchTerm)  &&
-  item.description.toLowerCase().includes(searchTermCity) 
+  item.name.toLowerCase().includes(searchTerm)
+  
 );
 
   if (!filteredRowList) {
@@ -95,14 +92,7 @@ export default function SimpleCat() {
           onChange={handleChange}
         />
         <div />
-        <div className="App">
-        <input
-          type="text"
-          placeholder="Filter description"
-          value={searchTermCity}
-          onChange={handleChangeCity}
-        />
-        <div />
+       
         <div>
     <div style={{ paddingTop: "50px" }}>
       
@@ -117,6 +107,19 @@ export default function SimpleCat() {
         >
           Sort by Name 
         </button>
+        <button
+        className="btn btn-outline-primary"
+        style={{ padding: "10px", margin:'10px', minwidth: "100px", color:'white'}}
+          onClick={() => {
+            
+
+            handleSortByField("intelligence");
+          }}
+        >
+          Sort by Intelligence 
+        </button>
+
+        
 
         <table className="table" style={{ color: "inherit" }}>
           <thead>
@@ -129,9 +132,9 @@ export default function SimpleCat() {
               <th
                 scope="col"
                 align="center"
-                onClick={() => handleSortByField("description")}
+                onClick={() => handleSortByField("intelligence")}
               >
-                Description
+                Intelligence
               </th>
               <th
                 scope="col"
@@ -156,10 +159,10 @@ export default function SimpleCat() {
               <tr key={row.name}>
                 <th scope="row">{row.name}</th>
 
-                <td align="center">{row.description}</td>
+                <td align="center">{row.intelligence}</td>
                
                 <td align="center">{row.temperament}</td>
-                <td align="center"><img style={{width:'150px'}} src={row.image} /></td>
+                <td align="center"><img style={{width:'250px'}} src={row.image} /></td>
               </tr>
             ))}
           </tbody>
@@ -168,7 +171,7 @@ export default function SimpleCat() {
     </div>
     </div>
     </div>
-    </div>
+    
   
   );
 }
