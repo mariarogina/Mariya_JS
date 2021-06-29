@@ -64,7 +64,7 @@ export default function DataTable() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        
         setRowList(
           data.map((item) =>
             createData(
