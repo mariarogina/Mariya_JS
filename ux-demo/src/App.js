@@ -9,7 +9,6 @@ import CountryTable from "./Components/tables/CountryTable";
 import { SortedTable } from "./Components//tables/SortedTable";
 import { ApiTable } from "./Components/tables/ApiTable";
 
-import AdMock from "./Components/tables/EditMock";
 import CatMock from "./Components/tables/CatMock";
 
 // const popUpList = [
@@ -87,7 +86,6 @@ function App() {
         {popUpList.map((item, key) => (
           <Popup data={item} key={key + item.title} />
         ))}
-        <AdMock />
         <CatMock />
 
         <DataTable />
