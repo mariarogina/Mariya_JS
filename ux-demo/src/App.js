@@ -87,12 +87,11 @@ function App() {
         <br />
         <CountryTable />
 
-        <SortedTable columns={columns} data={data} />
         <CatMock />
 
         <br />
         <br />
-        <ApiTable columns={columns} data={data} />
+        
         <SimpleCat />
         <CatEd />
       </header>
