@@ -8,6 +8,7 @@ import { countriesList } from "./countriesList";
 import CountryTable from "./Components/tables/CountryTable";
 import { SortedTable }from './Components//tables/SortedTable';
 import { ApiTable } from './Components/tables/ApiTable';
+import  SimpleCat  from './Components/tables/SimpleCat';
 
 // const popUpList = [
 //   {"btnValue" : "Come and visit Moscow", "paragraph" : "Moscow is the Capital of Russia", "title": "Welcome to Moscow", "imgSrc": "https://gkd.ru/assets/i/ai/4/2/8/i/2884202.jpg"},
@@ -95,6 +96,7 @@ const data = React.useMemo(
       <br/>
       <br/>
       <ApiTable columns={columns} data={data}/>
+      <SimpleCat />
         
         
       </header>
