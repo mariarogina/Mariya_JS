@@ -118,15 +118,15 @@ function CatEd() {
                                 {
                                     inEditMode.status && inEditMode.rowKey === item.id ? (
                                         <React.Fragment>
-                                            <button
-                                                className={"btn btn-outline-success"}
+                                            <button   style={{margin:'20px'}}
+                                                className={"btn btn-outline-dark"}
                                                 onClick={() => onSave({id: item.id, newIntel: catIntel})}
                                             >
                                                 Save
                                             </button>
 
-                                            <button
-                                                className={"btn btn-outline-info"}
+                                            <button   style={{margin:'20px'}}
+                                                className={"btn btn-outline-danger"}
                                                 style={{marginLeft: 8}}
                                                 onClick={() => onCancel()}
                                             >
@@ -135,6 +135,7 @@ function CatEd() {
                                         </React.Fragment>
                                     ) : (
                                         <button
+                                        style={{margin:'20px'}}
                                             className={"btn btn-outline-warning"}
                                             onClick={() => onEdit({id: item.id, currentIntel: item.temperament})}
                                         >
