@@ -67,7 +67,7 @@ const CountryForm = ({initialData, handleSubmit}) => {
           <Field id="population" name="population" placeholder="population"/>
           <span style={{color: "red", fontSize: "10px"}}>{touched.population && errors.population}</span>
 
-          <button type="submit">Submit</button>
+          <button className = "btn-primary" type="submit">Add</button>
         </Form>
       )}
     </Formik>

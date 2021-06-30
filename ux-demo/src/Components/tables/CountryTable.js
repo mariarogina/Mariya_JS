@@ -38,7 +38,7 @@ export default function CountryTable() {
       });
       setRowList(
         sortedRowList.map((item) => {
-          return createData(item.numericCode, item.name.toLowerCase(), item.capital.toLowerCase(), item.population)
+          return createData(item.numericCode, item.name, item.capital, item.population)
         })
       );
 
@@ -114,8 +114,8 @@ export default function CountryTable() {
   
 
   return (
-    <div style={{ paddingTop: "50px" }}>
-      <h1 style={{ color: "#ab0075" }}>The Table of Countries</h1>
+    <div style={{ paddingTop: "50px", marginTop:'60px'}}>
+      <h1 style={{ color: "#ab0075" }}>The Table of Countries RESTful API</h1>
       <br />
       <div className="App">
         <input
@@ -138,7 +138,7 @@ export default function CountryTable() {
           <h1> ADD A COUNTRY </h1>
           <CountryForm handleSubmit={handleAddCountry} initialData={{name: '', numericCode: 0, population: 0, capital: ''}}/>
           <button
-            className="btn btn-outline-primary"
+            className="btn btn-success"
             style={{
               padding: "10px",
               margin: "10px",
@@ -152,7 +152,7 @@ export default function CountryTable() {
             Sort by Code{" "}
           </button>
           <button
-            className="btn btn-outline-primary"
+            className="btn btn-success"
             style={{
               padding: "10px",
               margin: "10px",
@@ -166,7 +166,7 @@ export default function CountryTable() {
             Sort by Name{" "}
           </button>
           <button
-            className="btn btn-outline-primary"
+            className="btn btn-success"
             style={{
               padding: "10px",
               margin: "10px",
@@ -180,7 +180,7 @@ export default function CountryTable() {
             Sort by Capital{" "}
           </button>
           <button
-            className="btn btn-outline-primary"
+            className="btn btn-success"
             style={{
               padding: "10px",
               margin: "10px",
