@@ -2,15 +2,13 @@
   "inventory": [
     {
       "id": 1,
-      "product_name": "Weetabix",
+      "product_name": "Collgate toothpaste!!!",
       "product_category": "Cereal",
       "unit_price": "501"
     },
     {
-      "id": 2,
-      "product_name": "Colgate Toothpaste",
-      "product_category": "Toiletries",
-      "unit_price": "119"
+      "product_name": "Collgate toothpaste!!!",
+      "id": 2
     },
     {
       "id": 3,
