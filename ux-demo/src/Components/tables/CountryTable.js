@@ -11,7 +11,7 @@ export default function CountryTable() {
   const [isUpDirection, setIsUpDirection] = useState(true);
   const initialForm = {
     numericCode: "",
-    name: "Country",
+    name: "",
     capital: "",
     population: 0,
   };
@@ -23,7 +23,6 @@ export default function CountryTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTermCity, setSearchTermCity] = useState("");
 
-  // const [searchResults, setSearchResults] = useState([]);
 
   const handleSortByField = useCallback(
     (field) => {
@@ -54,26 +53,6 @@ export default function CountryTable() {
     setSearchTermCity(event.target.value);
   };
 
-  /*
-  useEffect(() => {
-    if(!rowList){
-      return
-    }
-    const results = rowList.filter(item =>
-      item.name.toLowerCase().includes(searchTerm)
-    );
-    setSearchResults(results);
-  }, [searchTerm]);
-*/
-
-  // console.log(searchResults)
-  /*
-  setRowList(
-    searchResults.map((item) =>
-      createData(item.numericCode, item.name, item.capital, item.population)
-    )
-  );
-  */
 
   useEffect(() => {
     fetch("https://restcountries.eu/rest/v2/all")
@@ -101,17 +80,10 @@ export default function CountryTable() {
   }
 
   const filteredRowList = rowList.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm)  &&
-    item.capital.toLowerCase().includes(searchTermCity) 
+    item.name.toLowerCase().includes(searchTerm.toLowerCase() ) &&
+    item.capital.toLowerCase().includes(searchTermCity.toLowerCase()) 
   );
 
-  /*
-  const filteredRowList = rowList.filter((item) =>
-     item.capital.toLowerCase().includes(searchTermCity) 
-  );
-  */
-
-  
 
   return (
     <div style={{ paddingTop: "50px", marginTop:'60px'}}>
@@ -136,7 +108,7 @@ export default function CountryTable() {
         <div>
           <br />
           <h1> ADD A COUNTRY </h1>
-          <CountryForm handleSubmit={handleAddCountry} initialData={{name: '', numericCode: 0, population: 0, capital: ''}}/>
+          <CountryForm handleSubmit={handleAddCountry} initialData={initialForm}/>
           <button
             className="btn btn-success"
             style={{
@@ -195,6 +167,7 @@ export default function CountryTable() {
           </button>
         </div>
         <br />
+        
         <table className="table" style={{ color: "inherit" }}>
           <thead>
             <tr>
