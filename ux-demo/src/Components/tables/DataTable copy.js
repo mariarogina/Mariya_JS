@@ -108,6 +108,20 @@ export default function DataTable() {
     return <div>Still Loading</div>
   }
 
+  const handleChangeTableField = (event, line) => {
+    const newValue = event.target.value
+    const fieldName = event.target.name
+    setRowList(oldList => {
+      return oldList.map((row, index) => {
+        if (index === line) {
+          return {...row, [fieldName]: newValue}
+        } else {
+          return row
+        }
+      })
+    })
+  }
+
   return (
 
     <div style={{paddingTop: "50px", marginTop: '60px'}}>
@@ -248,20 +262,36 @@ export default function DataTable() {
                   </thead>
 
                   <tbody>
-                  {filteredRowList.map((row) => (
-                    <tr
-                      key={row.name}
-                      style={{backgroundColor: checkedLines.includes(row.id) ? 'yellow' : 'transparent'}}
-                    >
-                      <th scope="row">{row.id}</th>
-
-                      <td align="center">{row.name}</td>
-                      <td align="center">{row.capital}</td>
-                      <td align="center">{row.language}</td>
-                      <td align="center">{row.currency}</td>
-                      <td align="center"><input type="checkbox" onClick={() => handleCheckLine(row)}/></td>
-                    </tr>
-                  ))}
+                  {filteredRowList.map((row, index) => {
+                    const isCheckedLine = checkedLines.includes(row.id)
+                    return (
+                      <tr
+                        key={row.name}
+                        style={{backgroundColor: isCheckedLine ? 'yellow' : 'transparent'}}
+                        className="table-tr"
+                      >
+                        <th scope="row">{row.id}</th>
+                        <td align="center">
+                          {isCheckedLine ? <input
+                            type="text"
+                            name={"name"}
+                            defaultValue={row.name}
+                            onChange={(event) => handleChangeTableField(event, index)}
+                          /> : row.name}
+                        </td>
+                        <td align="center">{isCheckedLine ?
+                          <input type="text" name={"capital"} defaultValue={row.capital}
+                                 onChange={(event) => handleChangeTableField(event, index)}/> : row.capital}</td>
+                        <td align="center">{isCheckedLine ?
+                          <input type="text" name={"language"} defaultValue={row.language}
+                                 onChange={(event) => handleChangeTableField(event, index)}/> : row.language}</td>
+                        <td align="center">{isCheckedLine ?
+                          <input type="text" name={"currency"} defaultValue={row.currency}
+                                 onChange={(event) => handleChangeTableField(event, index)}/> : row.currency}</td>
+                        <td align="center"><input type="checkbox" onClick={() => handleCheckLine(row)}/></td>
+                      </tr>
+                    )
+                  })}
                   </tbody>
                 </table>
               </div>
