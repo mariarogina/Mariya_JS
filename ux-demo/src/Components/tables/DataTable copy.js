@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react"
+import BigCountryTableForm from  '../BigCountryTableForm' 
 
 function createData(id, name, capital, language, currency) {
   return {id, name, capital, language, currency}
@@ -7,14 +8,13 @@ function createData(id, name, capital, language, currency) {
 export default function DataTable() {
   const [rowList, setRowList] = useState([])
   const [isUpDirection, setIsUpDirection] = useState(true)
-  const initialForm = {name: "", capital: "", language: "", currency: ""}
+  const initialForm = {id:"", name: "", capital: "", language: "", currency: ""}
   const [formData, setFormData] = useState(initialForm)
   const [checkedLines, setCheckedLines] = useState([])
 
-  const handleAddCountry = useCallback(() => {
-    setRowList((prevList) => [...prevList, formData])
-    setFormData(initialForm)
-  }, [setRowList, setFormData, formData])
+  const handleAddCountry = useCallback((values) => {
+    setRowList((prevList) => [...prevList, values]);
+  }, [setRowList]);
 
   const [searchTerm, setSearchTerm] = useState("")
   const [searchTermCity, setSearchTermCity] = useState("")
@@ -146,95 +146,11 @@ export default function DataTable() {
           <div>
             <div style={{paddingTop: "50px"}}>
               <h1 style={{color: "white"}}>The table of Three Countries</h1>
-              <br/>
-
               <div>
-                <div>
-                  <label>
-                    Id
-                    <input
-                      className="inpField"
-                      type="number"
-                      placeholder="id"
-                      value={formData.id}
-                      onChange={(event) =>
-                        setFormData((prevState) => ({
-                          ...prevState,
-                          id: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label>
-                    name
-                    <input
-                      className="inpField"
-                      type="text"
-                      placeholder="name"
-                      value={formData.name}
-                      onChange={(event) =>
-                        setFormData((prevState) => ({
-                          ...prevState,
-                          name: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label>
-                    capital
-                    <input
-                      className="inpField"
-                      type="text"
-                      placeholder="capital"
-                      value={formData.capital}
-                      onChange={(event) =>
-                        setFormData((prevState) => ({
-                          ...prevState,
-                          capital: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label>
-                    language
-                    <input
-                      className="inpField"
-                      type="text"
-                      placeholder="language"
-                      value={formData.language}
-                      onChange={(event) =>
-                        setFormData((prevState) => ({
-                          ...prevState,
-                          language: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label>
-                    currency
-                    <input
-                      className="inpField"
-                      type="text"
-                      placeholder="currency"
-                      value={formData.currency}
-                      onChange={(event) =>
-                        setFormData((prevState) => ({
-                          ...prevState,
-                          currency: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <br/>
-                  <br/>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    style={{padding: "10px", minWidth: "100px"}}
-                    onClick={handleAddCountry}
-                  >
-                    Add a country
-                  </button>
+              <br/>   
+              
+              <BigCountryTableForm handleSubmit={handleAddCountry} initialData={initialForm}/>
+                  
                   <button
                     type="button"
                     className="btn btn-primary"
@@ -382,7 +298,7 @@ export default function DataTable() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+        </div>
+     
   )
 }
