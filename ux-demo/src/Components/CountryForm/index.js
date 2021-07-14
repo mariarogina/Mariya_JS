@@ -7,9 +7,6 @@ const validation = (values) => {
     error.numericCode = 'numericCode is required!'
   }
 
-  // if (!values.name) {
-  //   error.name = 'name is required!'
-  // }
 
   if (!values.population) {
     error.population = 'population is required!'
@@ -45,7 +42,7 @@ const CountryForm = ({initialData, handleSubmit}) => {
         <Form>
           <label>
             Code
-            <Field name="numericCode" placeholder="Code"/>
+            <Field name="numericCode" placeholder="Code" validate={nameValidation}/>
             <span style={{color: "red", fontSize: "10px"}}>{touched.numericCode && errors.numericCode}</span>
           </label>
 
@@ -55,7 +52,7 @@ const CountryForm = ({initialData, handleSubmit}) => {
             id="name"
             name="name"
             placeholder="name"
-            validate={nameValidation}
+            
           />
           <span style={{color: "red", fontSize: "10px"}}>{touched.name && errors.name}</span>
 
@@ -63,11 +60,11 @@ const CountryForm = ({initialData, handleSubmit}) => {
           <Field id="capital" name="capital" placeholder="capital"/>
           <span style={{color: "red", fontSize: "10px"}}>{touched.capital && errors.capital}</span>
 
-          <label htmlFor="population">Capital</label>
+          <label htmlFor="population">Population</label>
           <Field id="population" name="population" placeholder="population"/>
           <span style={{color: "red", fontSize: "10px"}}>{touched.population && errors.population}</span>
 
-          <button type="submit">Submit</button>
+          <button className = "btn-primary" type="submit">Add</button>
         </Form>
       )}
     </Formik>
