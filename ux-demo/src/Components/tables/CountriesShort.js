@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import BigCountryTableForm from "../BigCountryTableForm";
+import ShortCountriesForm from "./ShortCountriesForm";
 
 function createData(id, name, capital, language, currency) {
   return { id, name, capital, language, currency };
@@ -153,7 +153,7 @@ export default function DataTable() {
               <div>
                 <br />
 
-                <BigCountryTableForm
+                <ShortCountriesForm
                   handleSubmit={handleAddCountry}
                   initialData={initialForm}
                 />

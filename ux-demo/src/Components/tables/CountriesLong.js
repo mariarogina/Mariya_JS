@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useState, useEffect } from "react";
-import CountryForm from "../CountryForm";
+import LongCountriesForm from "./LongCountriesForm";
 
 function createData(numericCode, name, capital, population) {
   return { numericCode, name, capital, population };
@@ -147,7 +147,7 @@ export default function CountryTable() {
           <div>
             <br />
             <h1> ADD A COUNTRY </h1>
-            <CountryForm
+            <LongCountriesForm
               handleSubmit={handleAddCountry}
               initialData={initialForm}
             />
