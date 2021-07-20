@@ -143,4 +143,6 @@ table > tbody > tr > td{
   background-color: transparent;
   display: flex;
   width: 102px;
+  border:none
 }
+
