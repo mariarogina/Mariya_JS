@@ -1,6 +1,5 @@
 import { createSelector } from "reselect";
 
-
 /**
  * Constants
  * */
@@ -25,29 +24,13 @@ export const TABLE_ERROR = `${moduleName}/TABLE_ERROR`;
 
 export const ReducerRecord = {
   tableData: [],
-  newTable:[],
+  newTable: [],
   checkedLines: [],
   searchString: "",
   isLoader: false,
   error: null,
-  isUpDirection:true,
+  isUpDirection: true,
 };
-
-/* sort*/
-
-// let isUpDirection = true;
-
-// const handleSortByField = 
-//   (field) => {
-//     state.newTable = state.tableData.sort((a, b) => {
-//       if (a[field] > b[field]) {
-//         return isUpDirection ? 1 : -1;
-//       } else if (a[field] < b[field]) {
-//         return isUpDirection ? -1 : 1;
-//       } else {
-//         return 0;
-//       }
-//     })}
 
 
 /*check line*/
@@ -61,7 +44,6 @@ export const ReducerRecord = {
 //     }
 //   }}
 
-
 /*remove line*/
 
 // const handleRemoveLine = (tableData) => {
@@ -69,25 +51,16 @@ export const ReducerRecord = {
 //   }
 
 
-/*filter*/
-
-// const filteredTableData = tableData.filter(
-//   (item) =>
-//     item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-//     item.capital.toLowerCase().includes(searchTermCity.toLowerCase())
-// );
-
 
 /*add*/
 
-// const handleAddLine = 
+// const handleAddLine =
 //   (values) => {
 //     setRowList((tableData) => [...tableData, values]);
 //   }
 
-
 export default function reducer(state = ReducerRecord, action) {
-  const { type, payload  } = action;
+  const { type, payload } = action;
 
   switch (type) {
     case FETCH_TABLE_DATA:
@@ -98,7 +71,6 @@ export default function reducer(state = ReducerRecord, action) {
         tableData: payload,
       });
 
-
     case TABLE_SORT:
       return Object.assign({}, state, {
         tableData: payload,
@@ -108,13 +80,12 @@ export default function reducer(state = ReducerRecord, action) {
         isUpDirection: payload,
       });
 
-
     case TABLE_FILTER:
       return Object.assign({}, state, {
         searchString: payload,
       });
 
-      case FILTERED_TABLE:
+    case FILTERED_TABLE:
       return Object.assign({}, state, {
         tableData: payload,
       });
@@ -200,7 +171,6 @@ export const handleDirectionSort = (isUpDirection) => ({
   payload: isUpDirection,
 });
 
-
 export const handleRemoveLine = (newTable) => ({
   type: REMOVE_TABLE_DATA,
   payload: newTable,
@@ -213,12 +183,12 @@ export const handleEditTable = (newTable) => ({
 
 export const handleFilterTable = (searchString) => ({
   type: TABLE_FILTER,
-  payload: searchString, 
+  payload: searchString,
 });
 
 export const handleTableFiltered = (tableData) => ({
   type: FILTERED_TABLE,
-  payload: tableData, 
+  payload: tableData,
 });
 
 export const handleCheckTableRow = (checkedLines) => ({

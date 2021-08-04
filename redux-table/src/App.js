@@ -23,7 +23,6 @@ import {
 } from "./ducks/table";
 import { useEffect, useCallback } from "react";
 import ShortCountriesForm from "./ShortCountriesForm";
-import { ReducerRecord } from "./ducks/table";
 
 function App({
   handleFetchTableList,
@@ -36,7 +35,7 @@ function App({
   searchString,
   handleFilterTable,
   handleTableFiltered,
-  newTable
+  newTable,
 }) {
   console.log("DATA BEGINS");
   console.log(tableData);
@@ -58,11 +57,6 @@ function App({
       });
   }, [handleFetchTableList, handleTableError]);
 
-  // console.log("SELECTOR" + tableSortSelector(ReducerRecord));
-
-  console.log(ReducerRecord);
-
-  console.log(tableSortSelector);
 
   const handleSortByField = useCallback(
     (field) => {
@@ -89,12 +83,11 @@ function App({
   };
 
   const handleFilterList = useCallback(() => {
-    
-      searchString !== ""
-        ?   newTable = tableData.filter((item) =>
-            item.name.toLowerCase().includes(searchString.toLowerCase())
-          )
-        :   newTable = tableData;
+    searchString !== ""
+      ? (newTable = tableData.filter((item) =>
+          item.name.toLowerCase().includes(searchString.toLowerCase())
+        ))
+      : (newTable = tableData);
 
     handleTableFiltered(newTable);
   }, [tableData, searchString, handleTableFiltered]);
@@ -115,20 +108,27 @@ function App({
   return (
     <div className="App">
       <header className="App-header">
-      <div>
-        <input
-          type="text"
-          placeholder="Filter country"
-          style={{ marginBottom: "20px" }}
-          value={searchString}
-          onChange={(e) => {
-            filterHandler(e);
-          }}
-        />
+        <div>
+          <input
+            type="text"
+            placeholder="Filter country"
+            style={{ marginBottom: "20px" }}
+            value={searchString}
+            onChange={(e) => {
+              filterHandler(e);
+            }}
+          />
 
-        <button className = "btn btn-primary-outline" style={{color:"white", borderColor:"white"}}onClick={refreshPage}> Reset filter </button>
-</div>
-      
+          <button
+            className="btn btn-primary-outline"
+            style={{ color: "white", borderColor: "white" }}
+            onClick={refreshPage}
+          >
+            {" "}
+            Reset filter{" "}
+          </button>
+        </div>
+
         <ShortCountriesForm
           handleSubmit={() => {
             console.log("here should go handleAddNewLine");
