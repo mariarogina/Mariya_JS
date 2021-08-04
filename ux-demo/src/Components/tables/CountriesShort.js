@@ -139,14 +139,14 @@ export default function DataTable() {
           onChange={handleChange}
         />
         <div />
-        <div className="App">
+        
           <input
             type="text"
             placeholder="Filter city"
             value={searchTermCity}
             onChange={handleChangeCity}
           />
-          <div />
+         
           <div>
             <div style={{ paddingTop: "50px" }}>
               <h1 style={{ color: "white" }}>The table of Three Countries</h1>
