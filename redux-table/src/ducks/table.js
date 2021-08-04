@@ -11,7 +11,6 @@ export const ADD_TABLE_ROW = `${moduleName}/ADD_TABLE_ROW`;
 export const TABLE_SORT = `${moduleName}/TABLE_SORT`;
 export const SORT_DIRECT = `${moduleName}/SORT_DIRECT`;
 export const TABLE_FILTER = `${moduleName}/TABLE_FILTER`;
-export const FILTERED_TABLE = `${moduleName}/FILTERED_TABLE`;
 export const TABLE_EDIT = `${moduleName}/TABLE_EDIT`;
 export const REMOVE_TABLE_DATA = `${moduleName}/REMOVE_TABLE_DATA`;
 export const CHECK_TABLE_ROW = `${moduleName}/CHECK_TABLE_ROW`;
@@ -85,10 +84,6 @@ export default function reducer(state = ReducerRecord, action) {
         searchString: payload,
       });
 
-    case FILTERED_TABLE:
-      return Object.assign({}, state, {
-        tableData: payload,
-      });
 
     case CHECK_TABLE_ROW:
       return Object.assign({}, state, {
@@ -132,10 +127,6 @@ export const checkedLinesSelector = createSelector(
 export const searchStringSelector = createSelector(
   stateSelector,
   (state) => state.searchString
-);
-export const filteredTableSelector = createSelector(
-  stateSelector,
-  (state) => state.tableData
 );
 
 export const isLoaderSelector = createSelector(
@@ -186,10 +177,6 @@ export const handleFilterTable = (searchString) => ({
   payload: searchString,
 });
 
-export const handleTableFiltered = (tableData) => ({
-  type: FILTERED_TABLE,
-  payload: tableData,
-});
 
 export const handleCheckTableRow = (checkedLines) => ({
   type: CHECK_TABLE_ROW,

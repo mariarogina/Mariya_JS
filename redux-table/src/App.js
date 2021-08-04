@@ -6,7 +6,6 @@ import {
   sortDirectionSelector,
   checkedLinesSelector,
   searchStringSelector,
-  filteredTableSelector,
   isLoaderSelector,
   errorSelector,
   handleFetchTableList,
@@ -16,7 +15,6 @@ import {
   handleRemoveLine,
   handleEditTable,
   handleFilterTable,
-  handleTableFiltered,
   handleCheckTableRow,
   handleTableLoading,
   handleTableError,
@@ -34,7 +32,6 @@ function App({
   isUpDirection,
   searchString,
   handleFilterTable,
-  handleTableFiltered,
   newTable,
 }) {
   console.log("DATA BEGINS");
@@ -56,7 +53,6 @@ function App({
         console.log("NO data WAS fetched");
       });
   }, [handleFetchTableList, handleTableError]);
-
 
   const handleSortByField = useCallback(
     (field) => {
@@ -82,24 +78,11 @@ function App({
     console.log(searchString);
   };
 
-  const handleFilterList = useCallback(() => {
-    searchString !== ""
-      ? (newTable = tableData.filter((item) =>
-          item.name.toLowerCase().includes(searchString.toLowerCase())
-        ))
-      : (newTable = tableData);
-
-    handleTableFiltered(newTable);
-  }, [tableData, searchString, handleTableFiltered]);
-
-  function filterHandler(event) {
-    handleChange(event);
-    handleFilterList();
-  }
-
-  function refreshPage() {
-    window.location.reload(false);
-  }
+  newTable = tableData.filter(
+    (item) => item.name.toLowerCase().includes(searchString.toLowerCase())
+    //  &&
+    // item.capital.toLowerCase().includes(searchString.toLowerCase())
+  );
 
   if (isLoader) {
     handleTableLoading();
@@ -108,26 +91,21 @@ function App({
   return (
     <div className="App">
       <header className="App-header">
-        <div>
-          <input
+        <input
+          type="text"
+          placeholder="Filter country"
+          style={{ marginBottom: "20px" }}
+          value={searchString}
+          onChange={handleChange}
+        />
+
+        {/* <input
             type="text"
-            placeholder="Filter country"
+            placeholder="Filter capital"
             style={{ marginBottom: "20px" }}
             value={searchString}
-            onChange={(e) => {
-              filterHandler(e);
-            }}
-          />
-
-          <button
-            className="btn btn-primary-outline"
-            style={{ color: "white", borderColor: "white" }}
-            onClick={refreshPage}
-          >
-            {" "}
-            Reset filter{" "}
-          </button>
-        </div>
+            onChange={handleChange}
+          /> */}
 
         <ShortCountriesForm
           handleSubmit={() => {
@@ -175,7 +153,7 @@ function App({
           </thead>
 
           <tbody>
-            {tableData.map((row) => {
+            {newTable.map((row) => {
               return (
                 <tr key={row.name}>
                   <th scope="row">{row.id}</th>
@@ -208,7 +186,6 @@ export default connect(
   }),
   {
     handleFetchTableList,
-    handleTableFiltered,
     handleAddNewLine,
     handleSortTable,
     handleDirectionSort,
