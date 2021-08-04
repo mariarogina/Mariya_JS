@@ -3,37 +3,43 @@ import { connect } from "react-redux";
 import {
   tableDataSelector,
   tableSortSelector,
+  sortDirectionSelector,
   checkedLinesSelector,
   searchStringSelector,
+  filteredTableSelector,
   isLoaderSelector,
   errorSelector,
   handleFetchTableList,
   handleAddNewLine,
   handleSortTable,
+  handleDirectionSort,
   handleRemoveLine,
   handleEditTable,
   handleFilterTable,
+  handleTableFiltered,
   handleCheckTableRow,
   handleTableLoading,
   handleTableError,
 } from "./ducks/table";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import ShortCountriesForm from "./ShortCountriesForm";
 
-
-
-function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
+function App({
+  handleFetchTableList,
+  tableData,
+  handleTableError,
+  isLoader,
+  handleSortTable,
+  handleDirectionSort,
+  isUpDirection,
+  searchString,
+  handleFilterTable,
+  handleTableFiltered,
+  newTable,
+}) {
   console.log("DATA BEGINS");
   console.log(tableData);
   console.log("DATA ENDS");
-
-  const initialForm = {
-    id: "",
-    name: "",
-    capital: "",
-    language: "",
-    currency: "",
-  };
 
   useEffect(() => {
     fetch(
@@ -47,10 +53,53 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
       })
       .catch((error) => {
         handleTableError(error);
+        console.log("NO data WAS fetched");
       });
   }, [handleFetchTableList, handleTableError]);
 
-  console.log("SELECTOR" + handleSortTable);
+
+  const handleSortByField = useCallback(
+    (field) => {
+      const sortedTable = tableData.sort((a, b) => {
+        if (a[field] > b[field]) {
+          return isUpDirection ? 1 : -1;
+        } else if (a[field] < b[field]) {
+          return isUpDirection ? -1 : 1;
+        } else {
+          return 0;
+        }
+      });
+
+      handleSortTable(sortedTable);
+
+      handleDirectionSort(!isUpDirection);
+    },
+    [tableData, handleSortTable, handleDirectionSort, isUpDirection]
+  );
+
+  const handleChange = (event) => {
+    handleFilterTable(event.target.value);
+    console.log(searchString);
+  };
+
+  const handleFilterList = useCallback(() => {
+    searchString !== ""
+      ? (newTable = tableData.filter((item) =>
+          item.name.toLowerCase().includes(searchString.toLowerCase())
+        ))
+      : (newTable = tableData);
+
+    handleTableFiltered(newTable);
+  }, [tableData, searchString, handleTableFiltered]);
+
+  function filterHandler(event) {
+    handleChange(event);
+    handleFilterList();
+  }
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   if (isLoader) {
     handleTableLoading();
@@ -58,38 +107,64 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
 
   return (
     <div className="App">
-      <input
-        type="text"
-        placeholder="Filter country"
-        // value={searchTerm}
-        // onChange={handleChange}
-      />
-
-      <input
-        type="text"
-        placeholder="Filter city"
-        // value={searchTermCity}
-        // onChange={handleChangeCity}
-      />
       <header className="App-header">
+        <div>
+          <input
+            type="text"
+            placeholder="Filter country"
+            style={{ marginBottom: "20px" }}
+            value={searchString}
+            onChange={(e) => {
+              filterHandler(e);
+            }}
+          />
 
-      <ShortCountriesForm
-                  handleSubmit={handleAddCountry}
-                  initialData={initialForm}
-                />
+          <button
+            className="btn btn-primary-outline"
+            style={{ color: "white", borderColor: "white" }}
+            onClick={refreshPage}
+          >
+            {" "}
+            Reset filter{" "}
+          </button>
+        </div>
+
+        <ShortCountriesForm
+          handleSubmit={() => {
+            console.log("here should go handleAddNewLine");
+          }}
+        />
         <table className="table" style={{ color: "inherit" }}>
           <thead>
             <tr>
               <th scope="col" align="center">
                 No.
               </th>
-              <th scope="col" align="center">
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleSortByField("name");
+                }}
+              >
                 Name
               </th>
-              <th scope="col" align="center" onClick={handleSortTable}>
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleSortByField("capital");
+                }}
+              >
                 Capital
               </th>
-              <th scope="col" align="center">
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleSortByField("language");
+                }}
+              >
                 Language
               </th>
               <th scope="col" align="center">
@@ -100,7 +175,7 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
           </thead>
 
           <tbody>
-            {tableData.map((row, index) => {
+            {tableData.map((row) => {
               return (
                 <tr key={row.name}>
                   <th scope="row">{row.id}</th>
@@ -129,11 +204,14 @@ export default connect(
     searchString: searchStringSelector(state),
     isLoader: isLoaderSelector(state),
     error: errorSelector(state),
+    isUpDirection: sortDirectionSelector(state),
   }),
   {
     handleFetchTableList,
+    handleTableFiltered,
     handleAddNewLine,
     handleSortTable,
+    handleDirectionSort,
     handleRemoveLine,
     handleEditTable,
     handleFilterTable,

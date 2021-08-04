@@ -9,7 +9,9 @@ export const moduleName = "table";
 export const FETCH_TABLE_DATA = `${moduleName}/FETCH_TABLE_DATA`;
 export const ADD_TABLE_ROW = `${moduleName}/ADD_TABLE_ROW`;
 export const TABLE_SORT = `${moduleName}/TABLE_SORT`;
+export const SORT_DIRECT = `${moduleName}/SORT_DIRECT`;
 export const TABLE_FILTER = `${moduleName}/TABLE_FILTER`;
+export const FILTERED_TABLE = `${moduleName}/FILTERED_TABLE`;
 export const TABLE_EDIT = `${moduleName}/TABLE_EDIT`;
 export const REMOVE_TABLE_DATA = `${moduleName}/REMOVE_TABLE_DATA`;
 export const CHECK_TABLE_ROW = `${moduleName}/CHECK_TABLE_ROW`;
@@ -22,28 +24,13 @@ export const TABLE_ERROR = `${moduleName}/TABLE_ERROR`;
 
 export const ReducerRecord = {
   tableData: [],
-  newTable:[],
+  newTable: [],
   checkedLines: [],
   searchString: "",
   isLoader: false,
   error: null,
+  isUpDirection: true,
 };
-
-/* sort*/
-
-// let isUpDirection = true;
-
-// const handleSortByField = 
-//   (field) => {
-//     state.newTable = state.tableData.sort((a, b) => {
-//       if (a[field] > b[field]) {
-//         return isUpDirection ? 1 : -1;
-//       } else if (a[field] < b[field]) {
-//         return isUpDirection ? -1 : 1;
-//       } else {
-//         return 0;
-//       }
-//     })}
 
 
 /*check line*/
@@ -57,7 +44,6 @@ export const ReducerRecord = {
 //     }
 //   }}
 
-
 /*remove line*/
 
 // const handleRemoveLine = (tableData) => {
@@ -65,22 +51,13 @@ export const ReducerRecord = {
 //   }
 
 
-/*filter*/
-
-// const filteredTableData = tableData.filter(
-//   (item) =>
-//     item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-//     item.capital.toLowerCase().includes(searchTermCity.toLowerCase())
-// );
-
 
 /*add*/
 
-// const handleAddLine = 
+// const handleAddLine =
 //   (values) => {
 //     setRowList((tableData) => [...tableData, values]);
 //   }
-
 
 export default function reducer(state = ReducerRecord, action) {
   const { type, payload } = action;
@@ -96,12 +73,23 @@ export default function reducer(state = ReducerRecord, action) {
 
     case TABLE_SORT:
       return Object.assign({}, state, {
-        newTable: payload,
+        tableData: payload,
       });
+    case SORT_DIRECT:
+      return Object.assign({}, state, {
+        isUpDirection: payload,
+      });
+
     case TABLE_FILTER:
       return Object.assign({}, state, {
         searchString: payload,
       });
+
+    case FILTERED_TABLE:
+      return Object.assign({}, state, {
+        tableData: payload,
+      });
+
     case CHECK_TABLE_ROW:
       return Object.assign({}, state, {
         checkedLines: payload,
@@ -130,7 +118,12 @@ export const tableDataSelector = createSelector(
 );
 export const tableSortSelector = createSelector(
   stateSelector,
-  (state) => state.newTable
+  (state) => state.tableData
+);
+
+export const sortDirectionSelector = createSelector(
+  stateSelector,
+  (state) => state.isUpDirection
 );
 export const checkedLinesSelector = createSelector(
   stateSelector,
@@ -140,6 +133,11 @@ export const searchStringSelector = createSelector(
   stateSelector,
   (state) => state.searchString
 );
+export const filteredTableSelector = createSelector(
+  stateSelector,
+  (state) => state.tableData
+);
+
 export const isLoaderSelector = createSelector(
   stateSelector,
   (state) => state.isLoader
@@ -168,6 +166,11 @@ export const handleSortTable = (tableData) => ({
   payload: tableData,
 });
 
+export const handleDirectionSort = (isUpDirection) => ({
+  type: SORT_DIRECT,
+  payload: isUpDirection,
+});
+
 export const handleRemoveLine = (newTable) => ({
   type: REMOVE_TABLE_DATA,
   payload: newTable,
@@ -181,6 +184,11 @@ export const handleEditTable = (newTable) => ({
 export const handleFilterTable = (searchString) => ({
   type: TABLE_FILTER,
   payload: searchString,
+});
+
+export const handleTableFiltered = (tableData) => ({
+  type: FILTERED_TABLE,
+  payload: tableData,
 });
 
 export const handleCheckTableRow = (checkedLines) => ({
