@@ -3,39 +3,43 @@ import { connect } from "react-redux";
 import {
   tableDataSelector,
   tableSortSelector,
+  sortDirectionSelector,
   checkedLinesSelector,
   searchStringSelector,
+  filteredTableSelector,
   isLoaderSelector,
   errorSelector,
   handleFetchTableList,
   handleAddNewLine,
   handleSortTable,
+  handleDirectionSort,
   handleRemoveLine,
   handleEditTable,
   handleFilterTable,
+  handleTableFiltered,
   handleCheckTableRow,
   handleTableLoading,
   handleTableError,
 } from "./ducks/table";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import ShortCountriesForm from "./ShortCountriesForm";
-import {ReducerRecord} from "./ducks/table";
-import reducer from "./ducks/table";
+import { ReducerRecord } from "./ducks/table";
 
-
-
-function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
+function App({
+  handleFetchTableList,
+  tableData,
+  handleTableError,
+  isLoader,
+  handleSortTable,
+  handleDirectionSort,
+  isUpDirection,
+  searchString,
+  handleFilterTable,
+  
+}) {
   console.log("DATA BEGINS");
   console.log(tableData);
   console.log("DATA ENDS");
-
-  const initialForm = {
-    id: "",
-    name: "",
-    capital: "",
-    language: "",
-    currency: "",
-  };
 
   useEffect(() => {
     fetch(
@@ -49,14 +53,66 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
       })
       .catch((error) => {
         handleTableError(error);
+        console.log("NO data WAS fetched");
       });
   }, [handleFetchTableList, handleTableError]);
 
   // console.log("SELECTOR" + tableSortSelector(ReducerRecord));
 
-  console.log(ReducerRecord)
+  console.log(ReducerRecord);
 
-  console.log(tableSortSelector)
+  console.log(tableSortSelector);
+
+  const handleSortByField = useCallback(
+    (field) => {
+      const sortedTable = tableData.sort((a, b) => {
+        if (a[field] > b[field]) {
+          return isUpDirection ? 1 : -1;
+        } else if (a[field] < b[field]) {
+          return isUpDirection ? -1 : 1;
+        } else {
+          return 0;
+        }
+      });
+
+      handleSortTable(sortedTable);
+
+      handleDirectionSort(!isUpDirection);
+    },
+    [tableData, handleSortTable, handleDirectionSort, isUpDirection]
+  );
+
+  
+
+  const handleFilterList = useCallback(() => {
+
+    handleFilterTable(searchString);
+   
+    const filteredTable = tableData.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchString.toLowerCase()) 
+        
+        // &&
+        // item.capital.toLowerCase().includes(searchString.toLowerCase())
+    );
+    console.log(searchString)
+
+    
+    handleTableFiltered(filteredTable);
+
+  }, [tableData, handleFilterTable, searchString, handleTableFiltered]);
+
+  //   const handleFilterList = useCallback(
+  //     () => {const filteredTable = tableData.filter(
+  //     (item)=>
+  //       item.name.toLowerCase().includes(searchString.toLowerCase()) &&
+  //       item.capital.toLowerCase().includes(searchString.toLowerCase())
+  //   )
+
+  //   handleFilterTable(searchString);
+  //   handleSortTable(filteredTable);
+
+  // },[handleFilterTable, tableData, searchString, handleSortTable])
 
   if (isLoader) {
     handleTableLoading();
@@ -64,38 +120,58 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
 
   return (
     <div className="App">
-      <input
-        type="text"
-        placeholder="Filter country"
-        // value={searchTerm}
-        // onChange={handleChange}
-      />
-
-      <input
-        type="text"
-        placeholder="Filter city"
-        // value={searchTermCity}
-        // onChange={handleChangeCity}
-      />
       <header className="App-header">
+        <input
+          type="text"
+          placeholder="Filter country"
+          style={{ marginBottom: "20px" }}
+          value={searchString}
+          onChange={handleFilterList}
+        />
 
-      <ShortCountriesForm
-                  handleSubmit={()=>{console.log("here should go handleAddNewLine")}}
-                  initialData={initialForm}
-                />
+        {/* <input
+          type="text"
+          placeholder="Filter city"
+          style={{ marginBottom: "20px" }}
+          value={searchString}
+          onChange={handleFilterList}
+        /> */}
+        <ShortCountriesForm
+          handleSubmit={() => {
+            console.log("here should go handleAddNewLine");
+          }}
+        />
         <table className="table" style={{ color: "inherit" }}>
           <thead>
             <tr>
               <th scope="col" align="center">
                 No.
               </th>
-              <th scope="col" align="center">
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleSortByField("name");
+                }}
+              >
                 Name
               </th>
-              <th scope="col" align="center" onClick={()=>{console.log("here should go handleSortTable")}}>
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleSortByField("capital");
+                }}
+              >
                 Capital
               </th>
-              <th scope="col" align="center">
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleSortByField("language");
+                }}
+              >
                 Language
               </th>
               <th scope="col" align="center">
@@ -106,7 +182,7 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
           </thead>
 
           <tbody>
-            {tableData.map((row, index) => {
+            {tableData.map((row) => {
               return (
                 <tr key={row.name}>
                   <th scope="row">{row.id}</th>
@@ -135,11 +211,14 @@ export default connect(
     searchString: searchStringSelector(state),
     isLoader: isLoaderSelector(state),
     error: errorSelector(state),
+    isUpDirection: sortDirectionSelector(state),
   }),
   {
     handleFetchTableList,
+    handleTableFiltered,
     handleAddNewLine,
     handleSortTable,
+    handleDirectionSort,
     handleRemoveLine,
     handleEditTable,
     handleFilterTable,
