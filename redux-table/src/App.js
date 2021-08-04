@@ -35,7 +35,8 @@ function App({
   isUpDirection,
   searchString,
   handleFilterTable,
-  
+  handleTableFiltered,
+  newTable
 }) {
   console.log("DATA BEGINS");
   console.log(tableData);
@@ -82,37 +83,30 @@ function App({
     [tableData, handleSortTable, handleDirectionSort, isUpDirection]
   );
 
-  
+  const handleChange = (event) => {
+    handleFilterTable(event.target.value);
+    console.log(searchString);
+  };
 
   const handleFilterList = useCallback(() => {
-
-    handleFilterTable(searchString);
-   
-    const filteredTable = tableData.filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchString.toLowerCase()) 
-        
-        // &&
-        // item.capital.toLowerCase().includes(searchString.toLowerCase())
-    );
-    console.log(searchString)
-
     
-    handleTableFiltered(filteredTable);
+      searchString !== ""
+        ?   newTable = tableData.filter((item) =>
+            item.name.toLowerCase().includes(searchString.toLowerCase())
+          )
+        :   newTable = tableData;
 
-  }, [tableData, handleFilterTable, searchString, handleTableFiltered]);
+    handleTableFiltered(newTable);
+  }, [tableData, searchString, handleTableFiltered]);
 
-  //   const handleFilterList = useCallback(
-  //     () => {const filteredTable = tableData.filter(
-  //     (item)=>
-  //       item.name.toLowerCase().includes(searchString.toLowerCase()) &&
-  //       item.capital.toLowerCase().includes(searchString.toLowerCase())
-  //   )
+  function filterHandler(event) {
+    handleChange(event);
+    handleFilterList();
+  }
 
-  //   handleFilterTable(searchString);
-  //   handleSortTable(filteredTable);
-
-  // },[handleFilterTable, tableData, searchString, handleSortTable])
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   if (isLoader) {
     handleTableLoading();
@@ -121,21 +115,20 @@ function App({
   return (
     <div className="App">
       <header className="App-header">
+      <div>
         <input
           type="text"
           placeholder="Filter country"
           style={{ marginBottom: "20px" }}
           value={searchString}
-          onChange={handleFilterList}
+          onChange={(e) => {
+            filterHandler(e);
+          }}
         />
 
-        {/* <input
-          type="text"
-          placeholder="Filter city"
-          style={{ marginBottom: "20px" }}
-          value={searchString}
-          onChange={handleFilterList}
-        /> */}
+        <button className = "btn btn-primary-outline" style={{color:"white", borderColor:"white"}}onClick={refreshPage}> Reset filter </button>
+</div>
+      
         <ShortCountriesForm
           handleSubmit={() => {
             console.log("here should go handleAddNewLine");
