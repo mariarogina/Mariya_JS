@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 
+
 /**
  * Constants
  * */
@@ -83,7 +84,7 @@ export const ReducerRecord = {
 
 
 export default function reducer(state = ReducerRecord, action) {
-  const { type, payload } = action;
+  const { type, payload  } = action;
 
   switch (type) {
     case FETCH_TABLE_DATA:
@@ -94,10 +95,13 @@ export default function reducer(state = ReducerRecord, action) {
         tableData: payload,
       });
 
+
     case TABLE_SORT:
       return Object.assign({}, state, {
-        newTable: payload,
+        tableData: payload,
       });
+
+
     case TABLE_FILTER:
       return Object.assign({}, state, {
         searchString: payload,
@@ -130,7 +134,7 @@ export const tableDataSelector = createSelector(
 );
 export const tableSortSelector = createSelector(
   stateSelector,
-  (state) => state.newTable
+  (state) => state.tableData
 );
 export const checkedLinesSelector = createSelector(
   stateSelector,

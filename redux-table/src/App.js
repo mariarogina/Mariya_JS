@@ -19,6 +19,8 @@ import {
 } from "./ducks/table";
 import { useEffect } from "react";
 import ShortCountriesForm from "./ShortCountriesForm";
+import {ReducerRecord} from "./ducks/table";
+import reducer from "./ducks/table";
 
 
 
@@ -50,7 +52,11 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
       });
   }, [handleFetchTableList, handleTableError]);
 
-  console.log("SELECTOR" + handleSortTable);
+  // console.log("SELECTOR" + tableSortSelector(ReducerRecord));
+
+  console.log(ReducerRecord)
+
+  console.log(tableSortSelector)
 
   if (isLoader) {
     handleTableLoading();
@@ -74,7 +80,7 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
       <header className="App-header">
 
       <ShortCountriesForm
-                  handleSubmit={handleAddCountry}
+                  handleSubmit={()=>{console.log("here should go handleAddNewLine")}}
                   initialData={initialForm}
                 />
         <table className="table" style={{ color: "inherit" }}>
@@ -86,7 +92,7 @@ function App({ handleFetchTableList, tableData, handleTableError, isLoader }) {
               <th scope="col" align="center">
                 Name
               </th>
-              <th scope="col" align="center" onClick={handleSortTable}>
+              <th scope="col" align="center" onClick={()=>{console.log("here should go handleSortTable")}}>
                 Capital
               </th>
               <th scope="col" align="center">
