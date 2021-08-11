@@ -1,5 +1,5 @@
-import "./App.css"
-import {connect} from "react-redux"
+import "./App.css";
+import { connect } from "react-redux";
 import {
   checkedLinesSelector,
   errorSelector,
@@ -12,51 +12,92 @@ import {
   handleRemoveLine,
   handleTableError,
   handleTableLoading,
+  handleFieldName,
+  handleNewValue,
   isLoaderSelector,
   searchStringSelector,
   sortSelector,
   tableDataSelector,
-} from "./ducks/table"
-import {useEffect} from "react"
-import ShortCountriesForm from "./ShortCountriesForm"
+  fieldNameSelector,
+  newValueSelector,
+  
+} from "./ducks/table";
+import { useEffect, useCallback,} from "react";
+import ShortCountriesForm from "./ShortCountriesForm";
 
 function App({
-               handleFetchTableList,
-               tableData,
-               error,
-               isLoader,
-               sort,
-               searchString,
-               handleFilterTable,
-               handleChangeSort
-             }) {
-  console.log("DATA BEGINS")
-  console.log(tableData)
-  console.log("DATA ENDS")
-
+  handleFetchTableList,
+  tableData,
+  error,
+  isLoader,
+  sort,
+  searchString,
+  handleFilterTable,
+  handleChangeSort,
+  handleAddNewLine,
+  handleCheckTableRow,
+  handleRemoveLine,
+  handleFieldName,
+  handleNewValue,
+  checkedLines
+}) {
   useEffect(() => {
-    handleFetchTableList()
-  }, [handleFetchTableList])
+    handleFetchTableList();
+  }, [handleFetchTableList]);
 
   const handleChange = (event) => {
-    handleFilterTable(event.target.value)
-    console.log(searchString)
+    handleFilterTable(event.target.value);
+    console.log(searchString);
+  };
+
+
+  const handleCheck = useCallback(
+    (row) => {
+      handleCheckTableRow(row);
+      if (checkedLines.includes(row.id)){
+        checkedLines = checkedLines.filter(function(item) {
+          return item !== row.id
+        })
+      } else {
+        checkedLines.push(row.id)};
+      console.log(checkedLines)
+    },
+    [handleCheckTableRow, checkedLines]
+  );
+
+  const handleRemove = useCallback(() => {
+    handleRemoveLine()
+  }, [handleRemoveLine]);
+
+  const handleEdit= (event) => {
+    handleNewValue(event.target.value);
+    handleFieldName(event.target.name)
+  };
+
+  
+  function isCheckedLine(row) {
+    if (checkedLines.includes(row.id)){
+      return true
+    } else {
+      return false
+    }
   }
 
+
   if (isLoader) {
-    return <div className="App">
-      <header className="App-header">
-        Now Loading ....
-      </header>
-    </div>
+    return (
+      <div className="App">
+        <header className="App-header">Now Loading ....</header>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="App">
-      <header className="App-header">
-        {error}
-      </header>
-    </div>
+    return (
+      <div className="App">
+        <header className="App-header">{error}</header>
+      </div>
+    );
   }
 
   return (
@@ -65,77 +106,112 @@ function App({
         <input
           type="text"
           placeholder="Filter country"
-          style={{marginBottom: "20px"}}
+          style={{ marginBottom: "20px" }}
           value={searchString}
           onChange={handleChange}
         />
 
         <ShortCountriesForm
-          handleSubmit={() => {
-            console.log("here should go handleAddNewLine")
+          handleSubmit={handleAddNewLine}
+          initialData={{
+            id: "",
+            name: "",
+            capital: "",
+            language: "",
+            currency: "",
           }}
-          initialData={{name: '', capital: '', language: '', currency: ''}}
         />
-        <table className="table" style={{color: "inherit"}}>
+
+        <button
+          type="button"
+          className="btn btn-primary"
+          style={{ padding: "10px", minWidth: "100px" }}
+          onClick={handleRemove}
+        >
+          Remove selected countries
+        </button>
+
+        <table className="table" style={{ color: "inherit" }}>
           <thead>
-          <tr>
-            <th scope="col" align="center">
-              No.
-            </th>
-            <th
-              scope="col"
-              align="center"
-              onClick={() => {
-                handleChangeSort({field: "name", isUpDirection: !sort.isUpDirection})
-              }}
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              align="center"
-              onClick={() => {
-                handleChangeSort({field: "capital", isUpDirection: !sort.isUpDirection})
-              }}
-            >
-              Capital
-            </th>
-            <th
-              scope="col"
-              align="center"
-              onClick={() => {
-                handleChangeSort({field: "language", isUpDirection: !sort.isUpDirection})
-              }}
-            >
-              Language
-            </th>
-            <th scope="col" align="center">
-              Currency
-            </th>
-            <th scope="col" align="center"></th>
-          </tr>
+            <tr>
+              <th scope="col" align="center">
+                No.
+              </th>
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleChangeSort({
+                    field: "name",
+                    isUpDirection: !sort.isUpDirection,
+                  });
+                }}
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleChangeSort({
+                    field: "capital",
+                    isUpDirection: !sort.isUpDirection,
+                  });
+                }}
+              >
+                Capital
+              </th>
+              <th
+                scope="col"
+                align="center"
+                onClick={() => {
+                  handleChangeSort({
+                    field: "language",
+                    isUpDirection: !sort.isUpDirection,
+                  });
+                }}
+              >
+                Language
+              </th>
+              <th scope="col" align="center">
+                Currency
+              </th>
+              <th scope="col" align="center"></th>
+            </tr>
           </thead>
 
           <tbody>
-          {tableData.map((row) => {
-            return (
-              <tr key={row.name}>
-                <th scope="row">{row.id}</th>
-                <td align="center">{row.name}</td>
-                <td align="center">{row.capital}</td>
-                <td align="center">{row.language}</td>
-                <td align="center">{row.currency}</td>
-                <td align="center">
-                  <input type="checkbox"/>
-                </td>
-              </tr>
-            )
-          })}
+            {tableData.map((row) => {
+              return (
+                <tr key={row.name}>
+                  <th scope="row">{row.id}</th>
+                  <td align="center">
+                          {isCheckedLine(row) ? (
+                            <input
+                              type="text"
+                              name={"name"}
+                              defaultValue={row.name}
+                              onChange={(event) =>
+                                handleEdit(event)
+                              }
+                            />
+                          ) : (
+                            row.name
+                          )}</td>
+                  <td align="center">{row.capital}</td>
+                  <td align="center">{row.language}</td>
+                  <td align="center">{row.currency}</td>
+                  <td align="center">
+                    <input type="checkbox" onClick={() => handleCheck(row)} />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </header>
     </div>
-  )
+  );
 }
 
 export default connect(
@@ -146,16 +222,19 @@ export default connect(
     isLoader: isLoaderSelector(state),
     error: errorSelector(state),
     sort: sortSelector(state),
+    fieldName: fieldNameSelector(state),
+    newValue: newValueSelector(state),
   }),
   {
     handleFetchTableList,
     handleAddNewLine,
     handleChangeSort,
     handleRemoveLine,
-    handleEditTable,
     handleFilterTable,
     handleCheckTableRow,
     handleTableLoading,
     handleTableError,
+    handleNewValue,
+    handleFieldName
   }
-)(App)
+)(App);
