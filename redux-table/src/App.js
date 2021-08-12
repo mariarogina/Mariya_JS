@@ -39,7 +39,8 @@ function App({
   handleRemoveLine,
   handleFieldName,
   handleNewValue,
-  checkedLines
+  checkedLines,
+  handleEditTable
 }) {
   useEffect(() => {
     handleFetchTableList();
@@ -69,9 +70,10 @@ function App({
     handleRemoveLine()
   }, [handleRemoveLine]);
 
-  const handleEdit= (event) => {
+  const handleEdit= (event, line) => {
     handleNewValue(event.target.value);
     handleFieldName(event.target.name)
+    handleEditTable(event, line)
   };
 
   
@@ -181,7 +183,7 @@ function App({
           </thead>
 
           <tbody>
-            {tableData.map((row) => {
+            {tableData.map((row, index) => {
               return (
                 <tr key={row.name}>
                   <th scope="row">{row.id}</th>
@@ -192,7 +194,7 @@ function App({
                               name={"name"}
                               defaultValue={row.name}
                               onChange={(event) =>
-                                handleEdit(event)
+                                handleEdit(event,index)
                               }
                             />
                           ) : (
@@ -231,6 +233,7 @@ export default connect(
     handleChangeSort,
     handleRemoveLine,
     handleFilterTable,
+    handleEditTable,
     handleCheckTableRow,
     handleTableLoading,
     handleTableError,
