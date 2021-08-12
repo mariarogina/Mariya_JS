@@ -20,9 +20,8 @@ import {
   tableDataSelector,
   fieldNameSelector,
   newValueSelector,
-  
 } from "./ducks/table";
-import { useEffect, useCallback,} from "react";
+import { useEffect, useCallback } from "react";
 import ShortCountriesForm from "./ShortCountriesForm";
 
 function App({
@@ -40,7 +39,7 @@ function App({
   handleFieldName,
   handleNewValue,
   checkedLines,
-  handleEditTable
+  handleEditTable,
 }) {
   useEffect(() => {
     handleFetchTableList();
@@ -51,40 +50,38 @@ function App({
     console.log(searchString);
   };
 
-
   const handleCheck = useCallback(
     (row) => {
       handleCheckTableRow(row);
-      if (checkedLines.includes(row.id)){
-        checkedLines = checkedLines.filter(function(item) {
-          return item !== row.id
-        })
+      if (checkedLines.includes(row.id)) {
+        checkedLines = checkedLines.filter(function (item) {
+          return item !== row.id;
+        });
       } else {
-        checkedLines.push(row.id)};
-      console.log(checkedLines)
+        checkedLines.push(row.id);
+      }
+      console.log(checkedLines);
     },
     [handleCheckTableRow, checkedLines]
   );
 
   const handleRemove = useCallback(() => {
-    handleRemoveLine()
+    handleRemoveLine();
   }, [handleRemoveLine]);
 
-  const handleEdit= (event, line) => {
+  const handleEdit = (event, index) => {
     handleNewValue(event.target.value);
-    handleFieldName(event.target.name)
-    handleEditTable(event, line)
+    handleFieldName(event.target.name);
+    handleEditTable(event, index);
   };
 
-  
   function isCheckedLine(row) {
-    if (checkedLines.includes(row.id)){
-      return true
+    if (checkedLines.includes(row.id)) {
+      return true;
     } else {
-      return false
+      return false;
     }
   }
-
 
   if (isLoader) {
     return (
@@ -188,18 +185,17 @@ function App({
                 <tr key={row.name}>
                   <th scope="row">{row.id}</th>
                   <td align="center">
-                          {isCheckedLine(row) ? (
-                            <input
-                              type="text"
-                              name={"name"}
-                              defaultValue={row.name}
-                              onChange={(event) =>
-                                handleEdit(event,index)
-                              }
-                            />
-                          ) : (
-                            row.name
-                          )}</td>
+                    {isCheckedLine(row) ? (
+                      <input
+                        type="text"
+                        name={"name"}
+                        defaultValue={row.name}
+                        onChange={(event) => handleEdit(event, index)}
+                      />
+                    ) : (
+                      row.name
+                    )}
+                  </td>
                   <td align="center">{row.capital}</td>
                   <td align="center">{row.language}</td>
                   <td align="center">{row.currency}</td>
@@ -238,6 +234,6 @@ export default connect(
     handleTableLoading,
     handleTableError,
     handleNewValue,
-    handleFieldName
+    handleFieldName,
   }
 )(App);
