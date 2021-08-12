@@ -91,6 +91,8 @@ export default function reducer(state = ReducerRecord, action) {
  * */
 
 export const stateSelector = (state) => state[moduleName];
+
+
 export const tableDataSelector = createSelector(stateSelector, (state) => {
   if (state.searchString) {
     return state.tableData.filter((item) =>
@@ -111,15 +113,16 @@ export const tableDataSelector = createSelector(stateSelector, (state) => {
 
 
   }
-if (state.newValue && state.fieldName) {
-  return state.tableData.map((row) => {
-          if (state.checkedLines.includes(row.id)) {
-            return { ...row, [state.fieldName]: state.newValue };
-          } else {
-            return row;
+// if (state.newValue && state.fieldName) {
+//   return state.tableData.map((row, index) => {
+//           if (index === line) {
+//             return { ...row, [state.fieldName]: state.newValue };
+//           } else {
+//             return row;
 
-          }
-})}
+//           }
+// })}
+
 
   
 
@@ -256,18 +259,28 @@ export const handleRemoveLine = () => (dispatch, getState) => {
 // });
 // }
 
-// export const handleEditTable = () => (dispatch, getState) => {
+export const handleEditTable = () => (dispatch, getState) => {
 
-//   const { tableData, newValue, fieldName } = getState()[moduleName];
-  
-//   dispatch({
+  const { tableData, newValue, fieldName, checkedLines } = getState()[moduleName];
+
+  dispatch({
+  type: TABLE_EDIT,
+  payload:tableData.map((row, index) => {
+    checkedLines.map((line) => {
+    if (index === line) {
+      return { ...row, [fieldName]: newValue };
+    } else {
+      return row;
+
+    }})})
+
+  })
+}
+
+// export const handleEditTable = (tableData) => ({
 //   type: TABLE_EDIT,
-//   payload: tableData.map(row) => {...row, [fieldName]: newValue }
+//   payload: tableData,
 // });
-
-// }
-
-
 
 export const handleFilterTable = (searchString) => ({
   type: TABLE_FILTER,
