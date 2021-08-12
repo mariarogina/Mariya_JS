@@ -18,6 +18,7 @@ export const TABLE_LOAD = `${moduleName}/TABLE_LOAD`;
 export const TABLE_ERROR = `${moduleName}/TABLE_ERROR`;
 export const EDIT_NAME = `${moduleName}/EDIT_NAME`;
 export const EDIT_VALUE = `${moduleName}/EDIT_VALUE`;
+export const CLEAR_CHECKERS = `${moduleName}/CLEAR_CHECKERS`;
 // export const IS_CHECKED = `${moduleName}/IS_CHECKED`;
 
 /**
@@ -58,6 +59,7 @@ export default function reducer(state = ReducerRecord, action) {
         searchString: payload,
       });
     case CHECK_TABLE_ROW:
+    case CLEAR_CHECKERS:
       return Object.assign({}, state, {
         checkedLines: payload,
       });
@@ -110,16 +112,6 @@ export const tableDataSelector = createSelector(stateSelector, (state) => {
       }
     });
   }
-  // if (state.newValue && state.fieldName) {
-  //   return state.tableData.map((row, index) => {
-  //           if (index === line) {
-  //             return { ...row, [state.fieldName]: state.newValue };
-  //           } else {
-  //             return row;
-
-  //           }
-  // })}
-
   return state.tableData;
 });
 
@@ -168,6 +160,11 @@ export const isCheckedSelector = createSelector(
 //   type: FETCH_TABLE_DATA,
 //   payload: tableData,
 // });
+
+export const handleEditTable = (newTable) => ({
+  type: TABLE_EDIT,
+  payload: newTable,
+});
 
 export const handleFetchTableList = () => async (dispatch, getState) => {
   await dispatch({
@@ -229,6 +226,11 @@ export const handleCheckTableRow = (row) => (dispatch, getState) => {
   });
 };
 
+export const handleClearCheckedLines = () => ({
+  type: CLEAR_CHECKERS,
+  payload: []
+})
+
 export const handleRemoveLine = () => (dispatch, getState) => {
   const { tableData, checkedLines } = getState()[moduleName];
 
@@ -247,23 +249,7 @@ export const handleRemoveLine = () => (dispatch, getState) => {
 // });
 // }
 
-export const handleEditTable = () => (dispatch, getState) => {
-  const { tableData, newValue, fieldName, checkedLines } =
-    getState()[moduleName];
 
-  dispatch({
-    type: TABLE_EDIT,
-    payload: tableData.map((row, index) => {
-      return (checkedLines.map((line) => {
-        if (index === line) {
-          return { ...row, [fieldName]: newValue };
-        } else {
-          return row;
-        }
-      }));
-    }),
-  });
-};
 
 // export const handleEditTable = (tableData) => ({
 //   type: TABLE_EDIT,
