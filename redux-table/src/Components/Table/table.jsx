@@ -1,32 +1,31 @@
 import React, { useEffect, useCallback, useState } from "react";
 import ShortCountriesForm from "../../ShortCountriesForm";
-import {batch} from 'react-redux'
+import { batch } from "react-redux";
 
 export default function Table({
-               handleFetchTableList,
-               tableData,
-               error,
-               isLoader,
-               sort,
-               searchString,
-               handleFilterTable,
-               handleChangeSort,
-               handleAddNewLine,
-               handleCheckTableRow,
-               handleClearCheckedLines,
-               handleRemoveLine,
-               checkedLines,
-               handleEditTable,
-             }) {
-
-  const [changedRows, setChangedRows] = useState([])
+  handleFetchTableList,
+  tableData,
+  error,
+  isLoader,
+  sort,
+  searchString,
+  handleFilterTable,
+  handleChangeSort,
+  handleAddNewLine,
+  handleCheckTableRow,
+  handleClearCheckedLines,
+  handleRemoveLine,
+  checkedLines,
+  handleEditTable,
+}) {
+  const [changedRows, setChangedRows] = useState([]);
 
   useEffect(() => {
     handleFetchTableList();
   }, [handleFetchTableList]);
 
   useEffect(() => {
-    setChangedRows(tableData)
+    setChangedRows(tableData.map(row => ({...row})));
   }, [tableData]);
 
   const handleChange = (event) => {
@@ -78,36 +77,37 @@ export default function Table({
 
   return (
     <>
-        <input
-          type="text"
-          placeholder="Filter country"
-          style={{ marginBottom: "20px" }}
-          value={searchString}
-          onChange={handleChange}
-        />
+      <p>Filter country</p>
+      <input
+        type="text"
+        placeholder="Filter country"
+        style={{ marginBottom: "20px" }}
+        value={searchString}
+        onChange={handleChange}
+      />
 
-        <ShortCountriesForm
-          handleSubmit={handleAddNewLine}
-          initialData={{
-            id: "",
-            name: "",
-            capital: "",
-            language: "",
-            currency: "",
-          }}
-        />
+      <ShortCountriesForm
+        handleSubmit={handleAddNewLine}
+        initialData={{
+          id: "",
+          name: "",
+          capital: "",
+          language: "",
+          currency: "",
+        }}
+      />
 
-        <button
-          type="button"
-          className="btn btn-primary"
-          style={{ padding: "10px", minWidth: "100px" }}
-          onClick={handleRemove}
-        >
-          Remove selected countries
-        </button>
+      <button
+        type="button"
+        className="btn btn-primary"
+        style={{ padding: "10px", minWidth: "100px" }}
+        onClick={handleRemove}
+      >
+        Remove selected countries
+      </button>
 
-        <table className="table" style={{ color: "inherit" }}>
-          <thead>
+      <table className="table" style={{ color: "inherit" }}>
+        <thead>
           <tr>
             <th scope="col" align="center">
               No.
@@ -153,9 +153,9 @@ export default function Table({
             </th>
             <th scope="col" align="center"></th>
           </tr>
-          </thead>
+        </thead>
 
-          <tbody>
+        <tbody>
           {tableData.map((row, index) => {
             return (
               <tr key={row.name}>
@@ -166,84 +166,127 @@ export default function Table({
                       type="text"
                       name={"countryName"}
                       defaultValue={row.name}
-                      onChange={(event) => setChangedRows(prevData => {
-                        return prevData.map(editedRow => {
-                          if(row.id === editedRow.id){
-                            editedRow.name = event.target.value
-                          }
-                          return editedRow
+                      onChange={(event) =>
+                        setChangedRows((prevData) => {
+                          return prevData.map((editedRow) => {
+                            if (row.id === editedRow.id) {
+                              editedRow.name = event.target.value;
+                            }
+                            return editedRow;
+                          });
                         })
-                      })}
+                      }
                     />
                   ) : (
                     row.name
                   )}
                 </td>
-                <td align="center">{isCheckedLine(row) ? (
-                  <input
-                    type="text"
-                    name={"capital"}
-                    defaultValue={row.capital}
-                    onChange={(event) => setChangedRows(prevData => {
-                      return prevData.map(editedRow => {
-                        if(row.id === editedRow.id){
-                          editedRow.capital = event.target.value
-                        }
-                        return editedRow
-                      })
-                    })}
-                  />
-                ) : (
-                  row.capital
-                )}</td>
-                <td align="center">{isCheckedLine(row) ? (
-                  <input
-                    type="text"
-                    name={"language"}
-                    defaultValue={row.language}
-                    onChange={(event) => setChangedRows(prevData => {
-                      return prevData.map(editedRow => {
-                        if(row.id === editedRow.id){
-                          editedRow.language = event.target.value
-                        }
-                        return editedRow
-                      })
-                    })}
-                  />
-                ) : (
-                  row.language
-                )}</td>
-                <td align="center">{isCheckedLine(row) ? (
-                  <input
-                    type="text"
-                    name={"currency"}
-                    defaultValue={row.currency}
-                    onChange={(event) => setChangedRows(prevData => {
-                      return prevData.map(editedRow => {
-                        if(row.id === editedRow.id){
-                          editedRow.currency = event.target.value
-                        }
-                        return editedRow
-                      })
-                    })}
-                  />
-                ) : (
-                  row.currency
-                )}</td>
                 <td align="center">
-                  <input type="checkbox" checked={checkedLines.includes(row.id)} onClick={() => handleCheck(row)} />
+                  {isCheckedLine(row) ? (
+                    <input
+                      type="text"
+                      name={"capital"}
+                      defaultValue={row.capital}
+                      onChange={(event) =>
+                        setChangedRows((prevData) => {
+                          return prevData.map((editedRow) => {
+                            if (row.id === editedRow.id) {
+                              editedRow.capital = event.target.value;
+                            }
+                            return editedRow;
+                          });
+                        })
+                      }
+                    />
+                  ) : (
+                    row.capital
+                  )}
+                </td>
+                <td align="center">
+                  {isCheckedLine(row) ? (
+                    <div>
+                      <input
+                        type="text"
+                        name={"language"}
+                        defaultValue={row.language}
+                        
+                        onChange={(event) => {
+                          setChangedRows((prevData) => {
+                            return prevData.map((editedRow) => {
+                              if (row.id === editedRow.id) {
+                                editedRow.language = event.target.value;
+                              }
+
+                              return editedRow;
+                            });
+                          });
+                          console.log(changedRows);
+                        }}
+                      />{" "}
+                    </div>
+                  ) : (
+                    row.language
+                  )}
+                </td>
+                <td align="center">
+                  {isCheckedLine(row) ? (
+                    <input
+                      type="text"
+                      name={"currency"}
+                      defaultValue={row.currency}
+                      onChange={(event) =>
+                        setChangedRows((prevData) => {
+                          return prevData.map((editedRow) => {
+                            if (row.id === editedRow.id) {
+                              editedRow.currency = event.target.value;
+                            }
+                            return editedRow;
+                          });
+                        })
+                      }
+                    />
+                  ) : (
+                    row.currency
+                  )}
+                </td>
+                <td align="center">
+                  <input
+                    type="checkbox"
+                    checked={checkedLines.includes(row.id)}
+                    onClick={() => handleCheck(row)}
+                  />
                 </td>
               </tr>
             );
           })}
-          </tbody>
-        </table>
-      {checkedLines.length ? <button onClick={() => {
-        batch(() => {
-          handleEditTable(changedRows)
-          handleClearCheckedLines(checkedLines)
-        })
-      }}>Save changes</button> : ''}
-      </>
+        </tbody>
+      </table>
+      {checkedLines.length ? (
+        <>
+          <button
+            onClick={() => {
+              batch(() => {
+                handleEditTable(changedRows);
+                handleClearCheckedLines(checkedLines);
+              });
+            }}
+          >
+            Save changes
+          </button>
+          <button
+            onClick={() => {
+              batch(() => {
+                setChangedRows(tableData.map(row => ({...row})));
+                handleClearCheckedLines(checkedLines);
+              });
+            }}
+          >
+            Back
+          </button>
+        </>
+      ) : (
+        ""
+      )}
+    </>
   );
 }
