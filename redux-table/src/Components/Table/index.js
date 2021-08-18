@@ -15,6 +15,7 @@ import {
   handleFieldName,
   handleNewValue,
   handleClearCheckedLines,
+  handleFetchByMiddleware,
   isLoaderSelector,
   searchStringSelector,
   sortSelector,
@@ -47,5 +48,6 @@ export default connect(
     handleNewValue,
     handleFieldName,
     handleClearCheckedLines,
+    handleFetchByMiddleware,
   }
 )(Table);

@@ -7,6 +7,8 @@ import { createSelector } from "reselect";
 export const moduleName = "table";
 
 export const FETCH_TABLE_DATA = `${moduleName}/FETCH_TABLE_DATA`;
+export const FETCH_TABLE_DATA_REQUEST = `${moduleName}/FETCH_TABLE_DATA_REQUEST`;
+export const FETCH_TABLE_DATA_SUCCESS = `${moduleName}/FETCH_TABLE_DATA_SUCCESS`;
 export const ADD_TABLE_ROW = `${moduleName}/ADD_TABLE_ROW`;
 export const TABLE_SORT = `${moduleName}/TABLE_SORT`;
 export const SET_SORT = `${moduleName}/SET_SORT`;
@@ -44,6 +46,7 @@ export default function reducer(state = ReducerRecord, action) {
 
   switch (type) {
     case FETCH_TABLE_DATA:
+    case FETCH_TABLE_DATA_SUCCESS:
     case ADD_TABLE_ROW:
     case REMOVE_TABLE_DATA:
     case TABLE_EDIT:
@@ -161,6 +164,10 @@ export const isCheckedSelector = createSelector(
 //   payload: tableData,
 // });
 
+export const handleFetchByMiddleware = () => ({
+  type: FETCH_TABLE_DATA_REQUEST
+});
+
 export const handleEditTable = (newTable) => ({
   type: TABLE_EDIT,
   payload: newTable,
@@ -173,10 +180,16 @@ export const handleFetchTableList = () => async (dispatch, getState) => {
   });
 
   try {
-    let response = await fetch(
-      "https://gist.githubusercontent.com/mariarogina/1bf4e1947ec2fc1e8ded4882e57f4d69/raw/89eb2570fcfd69f31c4dfd21f5f49733fe0bb4d0/countriesdata.json"
-    );
-    const data = await response.json();
+    const persistedData = JSON.parse(localStorage.getItem('table'))
+    let response, data
+    if(persistedData && persistedData.length) {
+      data = JSON.parse(localStorage.getItem('table'))
+    } else {
+      response = await fetch(
+        "https://gist.githubusercontent.com/mariarogina/1bf4e1947ec2fc1e8ded4882e57f4d69/raw/89eb2570fcfd69f31c4dfd21f5f49733fe0bb4d0/countriesdata.json"
+      );
+      data = await response.json();
+    }
 
     await dispatch({
       type: FETCH_TABLE_DATA,
@@ -209,9 +222,11 @@ export const handleAddNewLine = (addValues) => (dispatch, getState) => {
   );
   let newId = lastId + 1;
 
+  const newTable = [...tableData, { ...addValues, id: newId }]
+
   dispatch({
     type: ADD_TABLE_ROW,
-    payload: [...tableData, { ...addValues, id: newId }],
+    payload: newTable,
   });
 };
 
