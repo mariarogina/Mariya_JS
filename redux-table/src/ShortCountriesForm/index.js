@@ -39,11 +39,6 @@ const ShortCountriesForm = ({initialData, handleSubmit}) => {
       {({errors, touched}) => (
         <Form>
 
-        {/* <label htmlFor="id">Id</label>
-            <Field id="id" name="id" placeholder="id" type="number"/>
-            <span style={{color: "red", fontSize: "10px"}}>{touched.id && errors.id}</span>
-           */}
-
           <label htmlFor="name">Name</label>
           <Field
             id="name"
