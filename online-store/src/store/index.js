@@ -10,7 +10,11 @@ import searchReducer from '../reducers/search';
 import catalogItemReducer from '../reducers/catalogItem';
 import cartReducer from '../reducers/cart';
 import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga'
+import {all} from 'redux-saga/effects'
+import {fetchCategoriesSaga} from '../reducers/catalog'
 
+const sagaMiddleware = createSagaMiddleware()
 
 const reducer = combineReducers({
   topSales: topSalesReducer,
@@ -20,10 +24,18 @@ const reducer = combineReducers({
   cart: cartReducer
 });
 
+const rootSaga = function* rootSaga() {
+  yield all([
+    fetchCategoriesSaga()
+  ])
+}
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(reducer, composeEnhancers(
-  applyMiddleware(thunk)),
+  applyMiddleware(thunk, sagaMiddleware)),
 );
+
+sagaMiddleware.run(rootSaga)
 
 export default store;

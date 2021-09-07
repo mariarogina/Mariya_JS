@@ -27,6 +27,7 @@ import {
   CHANGE_FORM_FIELD
 } from '../actions/actionTypes';
 import urls from '../constants';
+import {take, put} from 'redux-saga/effects'
 
 
 ////Top-Sales
@@ -139,7 +140,7 @@ export const fetchCategories = () => async (dispatch) => {
     }
 
     const data = await response.json();
-    
+
     dispatch(fetchCategoriesSuccess(data));
   } catch (error) {
     dispatch(fetchCategoriesFailure(error.message));
