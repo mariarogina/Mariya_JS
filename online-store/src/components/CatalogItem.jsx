@@ -49,7 +49,7 @@ export default function CatalogItem({ match, history }) {
 
   if (loading) return <Preloader />;
 
-  if (error) return <Error callback={dispatch(fetchItem(id))} />;
+  // if (error) return <Error callback={dispatch(fetchItem(id))} />;
 
   return (
     <Fragment>

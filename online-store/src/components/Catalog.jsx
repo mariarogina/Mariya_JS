@@ -3,7 +3,7 @@ import { NavLink, Link, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchItems,
-  fetchCategories,
+  fetchCategoriesRequest,
   fetchMore,
   changeSearchField,
 } from "../actions/actionCreators";
@@ -24,7 +24,7 @@ function Catalog({ location, history }) {
 
   useEffect(() => {
     if (params.has("offset")) params.delete("offset");
-    dispatch(fetchCategories());
+    dispatch(fetchCategoriesRequest());
     dispatch(fetchItems(params));
   }, []);
 
@@ -60,7 +60,7 @@ function Catalog({ location, history }) {
 
   if (categories.loading) return <Preloader />;
 
-  if (categories.error) return <Error callback={dispatch(fetchCategories())} />;
+  // if (categories.error) return <Error callback={dispatch(fetchCategoriesRequest())} />;
 
   return (
     <Fragment>
@@ -84,7 +84,7 @@ function Catalog({ location, history }) {
             Все
           </NavLink>
         </li>
-        {categories.data.map((item) => (
+        {categories && categories.data && categories.data.length && categories.data.map((item) => (
           <li className="nav-item" key={item.id}>
             <NavLink
               to="#"
@@ -99,7 +99,8 @@ function Catalog({ location, history }) {
         ))}
       </ul>
       {items.error ? (
-        <Error callback={dispatch(fetchItems(params))} />
+        // <Error callback={dispatch(fetchItems(params))} />
+        <div/>
       ) : (
         items.data.length > 0 && (
           <div className="row">
