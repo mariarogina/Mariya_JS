@@ -27,10 +27,9 @@ import {
   CHANGE_FORM_FIELD
 } from '../actions/actionTypes';
 import urls from '../constants';
-import {take, put} from 'redux-saga/effects'
 
 
-////Top-Sales
+//Top-Sales
 export const fetchTopSalesRequest = () => ({
   type: FETCH_TOPSALES_REQUEST,
 });
@@ -49,27 +48,8 @@ export const fetchTopSalesSuccess = items => ({
   },
 });
 
-export const fetchTopSales = () => async (dispatch) => {
-  dispatch(fetchTopSalesRequest());
 
-  try {
-    const response = await fetch(urls.topSales, {
-      mode: 'cors',
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    const data = await response.json();
-    
-    dispatch(fetchTopSalesSuccess(data));
-  } catch (error) {
-    dispatch(fetchTopSalesFailure(error.message));
-  }
-};
-
-////Catalog
+//catalogue
 export const fetchItemsRequest = () => ({
   type: FETCH_ITEMS_REQUEST,
 });
@@ -108,7 +88,7 @@ export const fetchItems = search => async (dispatch) => {
   }
 };
 
-////Catalog Categories
+//catalogue Categories
 export const fetchCategoriesRequest = () => ({
   type: FETCH_CATEGORIES_REQUEST,
 });
@@ -140,14 +120,14 @@ export const fetchCategories = () => async (dispatch) => {
     }
 
     const data = await response.json();
-
+    
     dispatch(fetchCategoriesSuccess(data));
   } catch (error) {
     dispatch(fetchCategoriesFailure(error.message));
   }
 };
 
-////Catalog more items
+//catalogue more items
 export const fetchMoreRequest = () => ({
   type: FETCH_MORE_REQUEST,
 });
@@ -184,7 +164,7 @@ export const fetchMore = search => async (dispatch) => {
   }
 };
 
-////Search
+//Search
 export const changeSearchField = searchString => ({
   type: CHANGE_SEARCH_FIELD,
   payload: {
@@ -196,7 +176,7 @@ export const setSearching = () => ({
   type: IS_SEARCHING,
 });
 
-////Catalog item
+//catalogue item
 export const fetchItemRequest = () => ({
   type: FETCH_ITEM_REQUEST,
 });
@@ -258,7 +238,7 @@ export const fetchItem = (id) => async (dispatch) => {
 };
 
 
-////Cart
+//Cart
 export const getCartItemsSuccess = cartItems => ({
   type: GET_CART_ITEMS_SUCCESS,
   payload: {
@@ -319,8 +299,10 @@ export const getCartItems = () => (dispatch) => {
   for(let key of keys) {
     cartItems.push(JSON.parse(localStorage.getItem(key)));
   }
-  if (cartItems.length > 0) dispatch(getCartItemsSuccess(cartItems));
-  dispatch(getCartTotal());
+ 
+  dispatch(getCartItemsSuccess(cartItems));
+  // if (cartItems.length > 0) dispatch(getCartTotal())
+  
 };
 
 export const fetchOrder = () => async (dispatch, getState) => {

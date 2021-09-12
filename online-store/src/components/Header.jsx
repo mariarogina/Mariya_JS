@@ -67,7 +67,7 @@ function Header({ history }) {
                     to="/cart"
                     className="header-controls-pic header-controls-cart"
                   >
-                    {cartItems && (
+                    {cartItems && cartItems.length !== 0 &&(
                       <div className="header-controls-cart-full">
                         {cartItems.length}
                       </div>

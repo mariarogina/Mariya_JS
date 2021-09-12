@@ -7,6 +7,9 @@ import {
   CHANGE_FORM_FIELD
 } from '../actions/actionTypes'
 
+import urls from '../constants';
+import {take, put} from 'redux-saga/effects'
+
 const initialState = {
   cartItems: null,
   totalSum: null,
@@ -16,6 +19,7 @@ const initialState = {
   success: false
 };
 
+console.log(initialState)
 export default function cartReducer(state = initialState, action) {
   switch (action.type) {
 
@@ -64,3 +68,75 @@ export default function cartReducer(state = initialState, action) {
       return state;
   }
 }
+
+// export const fetchOrder = () => async (dispatch, getState) => {
+//   const {cart: {cartItems, owner}} = getState();
+//   dispatch(fetchOrderRequest());
+  
+//   const items = [];
+//   cartItems.forEach(item => {
+//     items.push({
+//       id: item.id,
+//       price: item.price,
+//       count: item.quantity
+//     })
+//   });
+
+//   const body = {
+//     owner: {
+//       phone: owner.phone,
+//       address: owner.address,
+//     },
+//     items: items
+//   }
+  
+
+
+
+// export const fetchOrderSaga = function* () {
+//   while(true) {
+//     yield take(FETCH_ORDER_REQUEST)
+//     const {cart: {cartItems, owner}} = getState();
+      
+//       const items = [];
+//       cartItems.forEach(item => {
+//         items.push({
+//           id: item.id,
+//           price: item.price,
+//           count: item.quantity
+//         })
+//       });
+    
+//       const body = {
+//         owner: {
+//           phone: owner.phone,
+//           address: owner.address,
+//         },
+//         items: items
+//       }
+      
+//       try {
+//             const response = yield fetch(`${urls.order}`, {
+//               method: 'POST',
+//               headers: {
+//                 'Content-Type': 'application/json;charset=utf-8'
+//               },
+//               body: JSON.stringify(body)
+//             });
+        
+//             if (!response.ok) {
+//               throw new Error(response.statusText);
+//             }
+//             localStorage.clear();
+        
+//             yield put({
+//           type: FETCH_ORDER_SUCCESS,
+//           payload: items
+//         })
+//           } catch (error) {
+//               yield put({
+//                 type: FETCH_ORDER_FAILURE,
+//                 payload: error.message
+//               })
+//             }
+// }}

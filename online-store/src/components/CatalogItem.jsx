@@ -2,7 +2,7 @@ import React, { useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchItem, setQuantity, setSize } from "../actions/actionCreators";
 import Preloader from "./Preloader";
-import Error from "./Error";
+
 
 export default function CatalogItem({ match, history }) {
   const { item, avalibleSizes, loading, error, quantity, size } = useSelector(
