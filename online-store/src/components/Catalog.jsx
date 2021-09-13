@@ -25,7 +25,7 @@ function Catalog({ location, history }) {
 
   useEffect(() => {
     if (params.has("offset")) params.delete("offset");
-    dispatch(fetchCategories());
+    dispatch(fetchCategoriesRequest());
     dispatch(fetchItems(params));
   }, []);
 
