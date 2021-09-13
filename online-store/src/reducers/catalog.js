@@ -86,7 +86,7 @@ export default function catalogReducer(state = initialState, action) {
         },
       };
     case FETCH_CATEGORIES_SUCCESS:
-      const { categories } = action.payload;
+      const  categories  = action.payload;
       return {
         ...state,
         categories: {
@@ -151,6 +151,7 @@ export const fetchCategoriesSaga = function* () {
       }
 
       const data = yield response.json();
+      console.log(data)
 
       yield put({
         type: FETCH_CATEGORIES_SUCCESS,
