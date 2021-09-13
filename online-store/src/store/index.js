@@ -13,6 +13,9 @@ import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga'
 import {all} from 'redux-saga/effects'
 import {fetchCategoriesSaga} from '../reducers/catalog'
+import {fetchTopSalesSaga} from '../reducers/topSales'
+import {fetchItemSaga} from '../reducers/catalogItem'
+
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -26,7 +29,9 @@ const reducer = combineReducers({
 
 const rootSaga = function* rootSaga() {
   yield all([
-    fetchCategoriesSaga()
+    fetchCategoriesSaga(),
+    fetchTopSalesSaga(),
+    fetchItemSaga()
   ])
 }
 

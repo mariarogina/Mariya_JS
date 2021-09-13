@@ -1,23 +1,23 @@
 import React, { useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTopSales } from "../actions/actionCreators";
+import { fetchTopSalesRequest } from "../actions/actionCreators";
 import Preloader from "./Preloader";
 import Error from "./Error";
+import { fetchTopSales } from "../actions/actionCreators"
 
 export default function TopSales() {
   const { items, loading, error } = useSelector((state) => state.topSales);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTopSales());
+    dispatch(fetchTopSalesRequest());
   }, []);
-
+  console.log(items)
   return (
     <Fragment>
       {loading && <Preloader />}
-      {/*{error && <Error callback={dispatch(fetchTopSales())} />}*/}
-      {items.length > 0 && (
+      {items &&  items.length &&(
         <div className="row">
           {items.map((item) => (
             <div className="col-4" key={item.id}>

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchItems,
   fetchCategoriesRequest,
+  fetchCategories,
   fetchMore,
   changeSearchField,
 } from "../actions/actionCreators";
@@ -24,7 +25,7 @@ function Catalog({ location, history }) {
 
   useEffect(() => {
     if (params.has("offset")) params.delete("offset");
-    dispatch(fetchCategoriesRequest());
+    dispatch(fetchCategories());
     dispatch(fetchItems(params));
   }, []);
 

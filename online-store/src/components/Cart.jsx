@@ -11,6 +11,8 @@ export default function Cart() {
   const { cartItems, totalSum, loading, error, success } = useSelector(
     (state) => state.cart
   );
+
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,6 +23,8 @@ export default function Cart() {
     localStorage.removeItem(name);
     dispatch(getCartItems());
   };
+
+  
 
   const handleChange = (evt) => {
     const { id, value } = evt.target;
@@ -42,11 +46,11 @@ export default function Cart() {
       </section>
     );
 
-  if (!cartItems)
+  if (!cartItems || cartItems.length==0 )
     return (
       <section className="cart text-center">
         <p>Вы еще ничего не выбрали</p>
-        <Link to="/catalog.html" className="btn btn-outline-secondary">
+        <Link to="/catalog" className="btn btn-outline-secondary">
           Выбрать
         </Link>
       </section>
@@ -83,7 +87,9 @@ export default function Cart() {
                   <td>
                     <button
                       className="btn btn-outline-danger btn-sm"
-                      onClick={() => handleRemove(o.name)}
+                      onClick={() => {
+                        handleRemove(o.name)}}
+                      
                     >
                       Удалить
                     </button>
@@ -100,7 +106,7 @@ export default function Cart() {
           </tbody>
         </table>
       </section>
-      {cartItems && (
+      {cartItems &&  (
         <section className="order">
           <h2 className="text-center">Оформить заказ</h2>
           <div className="card" style={{ maxWidth: "30rem", margin: "0 auto" }}>
