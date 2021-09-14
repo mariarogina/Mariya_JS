@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchItem, setQuantity, setSize } from "../actions/actionCreators";
+import {fetchItem, fetchItemRequest, setQuantity, setSize} from "../actions/actionCreators"
 import Preloader from "./Preloader";
 
 
@@ -12,7 +12,7 @@ export default function CatalogItem({ match, history }) {
   const id = match.params.id.replace(".html", "");
 
   useEffect(() => {
-    dispatch(fetchItem(id));
+    dispatch(fetchItemRequest(id));
   }, [id]);
 
   const handleDecrease = () => {

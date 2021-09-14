@@ -177,8 +177,9 @@ export const setSearching = () => ({
 });
 
 //catalogue item
-export const fetchItemRequest = () => ({
+export const fetchItemRequest = (id) => ({
   type: FETCH_ITEM_REQUEST,
+  payload: id
 });
 
 export const fetchItemFailure = error => ({
