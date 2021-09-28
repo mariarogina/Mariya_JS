@@ -1,15 +1,14 @@
 import React, { useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {fetchItem, fetchItemRequest, setQuantity, setSize} from "../actions/actionCreators"
+import { fetchItem, fetchItemRequest, setQuantity, setSize } from "../actions/actionCreators";
 import Preloader from "./Preloader";
 
-
 export default function CatalogItem({ match, history }) {
-  const { item, avalibleSizes, loading, error, quantity, size } = useSelector(
+  const { item, avalibleSizes, loading, quantity, size } = useSelector(
     (state) => state.catalogItem
   );
   const dispatch = useDispatch();
-  const id = match.params.id.replace(".html", "");
+  const id = match.params.id.replace("", "");
 
   useEffect(() => {
     dispatch(fetchItemRequest(id));
@@ -49,7 +48,6 @@ export default function CatalogItem({ match, history }) {
 
   if (loading) return <Preloader />;
 
-  // if (error) return <Error callback={dispatch(fetchItem(id))} />;
 
   return (
     <Fragment>

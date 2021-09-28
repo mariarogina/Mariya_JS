@@ -65,11 +65,9 @@ function Catalog({ location, history }) {
     dispatch(fetchItemsRequest(evt.target.value));
   };
 
-  
-
   return (
     <Fragment>
-      {location.pathname === "/catalog.html" && (
+      {location.pathname === "/catalog" && (
         <Search
           handleChange={handleChange}
           handleSubmit={handleSubmit}
@@ -82,7 +80,7 @@ function Catalog({ location, history }) {
           <NavLink
             to="#"
             isActive={() => !params.has("categoryId")}
-            onClick={(evt) => handleClickCategory(evt)}
+            onClick={(evt) => handleClickCategory(evt, null)}
             className="nav-link"
             activeClassName="active"
           >
@@ -103,8 +101,7 @@ function Catalog({ location, history }) {
           </li>
         ))}
       </ul>
-      {items.data && items.data.length === 0 ? (
-        // <Error callback={dispatch(fetchItems(params))} />
+      {items.error ? (
         <div></div>
       ) : (
         items.data && items.data.length > 0 && (
@@ -130,7 +127,7 @@ function Catalog({ location, history }) {
                     <p className="card-text">{item.title}</p>
                     <p className="card-text">{item.price} руб.</p>
                     <Link
-                      to={`/products/${item.id}.html`}
+                      to={`/products/${item.id}`}
                       className="btn btn-outline-primary"
                     >
                       Заказать

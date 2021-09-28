@@ -69,7 +69,7 @@ export default function catalogItemReducer(state = initialState, action) {
 
 export const fetchItemSaga = function* () {
   while (true) {
-    const payload = yield take(FETCH_ITEM_REQUEST)
+    const {payload} = yield take(FETCH_ITEM_REQUEST)
     try {
       const response = yield fetch(`${urls.items}/${payload}`, {
         mode: "cors",

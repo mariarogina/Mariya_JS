@@ -37,7 +37,7 @@ export default function TopSales() {
                   <p className="card-text">{item.title}</p>
                   <p className="card-text">{item.price} руб.</p>
                   <Link
-                    to={`/products/${item.id}.html`}
+                    to={`/products/${item.id}`}
                     className="btn btn-outline-primary"
                   >
                     Заказать
