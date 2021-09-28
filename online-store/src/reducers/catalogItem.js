@@ -6,7 +6,7 @@ import {
   SET_QUANTITY,
   SET_SIZE,
 } from "../actions/actionTypes"
-import {fetchTopSalesFailure, fetchItemSuccess} from '../actions/actionCreators'
+import {fetchItemFailure, fetchItemSuccess} from '../actions/actionCreators'
 
 import urls from '../constants'
 import {put, take} from 'redux-saga/effects'
@@ -69,7 +69,7 @@ export default function catalogItemReducer(state = initialState, action) {
 
 export const fetchItemSaga = function* () {
   while (true) {
-    const {payload} = yield take(FETCH_ITEM_REQUEST)
+    const payload = yield take(FETCH_ITEM_REQUEST)
     try {
       const response = yield fetch(`${urls.items}/${payload}`, {
         mode: "cors",
@@ -90,7 +90,7 @@ export const fetchItemSaga = function* () {
       yield put(fetchItemSuccess(data))
 
     } catch (error) {
-      yield put(fetchTopSalesFailure(error))
+      yield put(fetchItemFailure(error))
     }
   }
 }

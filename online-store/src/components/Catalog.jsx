@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchItems,
   fetchCategoriesRequest,
+  fetchItemsRequest,
   fetchCategories,
   fetchMore,
-  changeSearchField,
 } from "../actions/actionCreators";
 import Preloader from "./Preloader";
 import Error from "./Error";
@@ -14,6 +14,7 @@ import Search from "./Search";
 
 function Catalog({ location, history }) {
   const { items, categories, more } = useSelector((state) => state.catalog);
+  
   const { searchString } = useSelector((state) => state.search);
 
   const dispatch = useDispatch();
@@ -23,10 +24,15 @@ function Catalog({ location, history }) {
   const setUrl = () =>
     history.replace(`${location.pathname}?${params.toString()}`);
 
+ 
+
   useEffect(() => {
+    
     if (params.has("offset")) params.delete("offset");
     dispatch(fetchCategoriesRequest());
-    dispatch(fetchItems(params));
+    dispatch(fetchItemsRequest(params));
+    
+    
   }, []);
 
   const handleClickCategory = (evt, id) => {
@@ -39,7 +45,7 @@ function Catalog({ location, history }) {
     }
     params.delete("offset");
     setUrl();
-    dispatch(fetchItems(params));
+    dispatch(fetchItemsRequest(params));
   };
 
   const handleMore = () => {
@@ -52,16 +58,14 @@ function Catalog({ location, history }) {
     evt.preventDefault();
     params.set("q", searchString);
     setUrl();
-    dispatch(fetchItems(params));
+    dispatch(fetchItemsRequest(params));
   };
 
   const handleChange = (evt) => {
-    dispatch(changeSearchField(evt.target.value));
+    dispatch(fetchItemsRequest(evt.target.value));
   };
 
-  if (categories.loading) return <Preloader />;
-
-  // if (categories.error) return <Error callback={dispatch(fetchCategoriesRequest())} />;
+  
 
   return (
     <Fragment>
@@ -99,11 +103,11 @@ function Catalog({ location, history }) {
           </li>
         ))}
       </ul>
-      {items.error ? (
+      {items.data && items.data.length === 0 ? (
         // <Error callback={dispatch(fetchItems(params))} />
-        <div/>
+        <div></div>
       ) : (
-        items.data.length > 0 && (
+        items.data && items.data.length > 0 && (
           <div className="row">
             {items.data.map((item) => (
               <div className="col-4" key={item.id}>
@@ -152,7 +156,7 @@ function Catalog({ location, history }) {
       )}
     </Fragment>
   );
-}
+};
 
 const CatalogWithRouter = withRouter(Catalog);
 export default CatalogWithRouter;
