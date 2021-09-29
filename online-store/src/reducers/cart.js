@@ -69,28 +69,9 @@ export default function cartReducer(state = initialState, action) {
   }
 }
 
-// export const fetchOrder = () => async (dispatch, getState) => {
-//   const {cart: {cartItems, owner}} = getState();
-//   dispatch(fetchOrderRequest());
 
-//   const items = [];
-//   cartItems.forEach(item => {
-//     items.push({
-//       id: item.id,
-//       price: item.price,
-//       count: item.quantity
-//     })
-//   });
 
-//   const body = {
-//     owner: {
-//       phone: owner.phone,
-//       address: owner.address,
-//     },
-//     items: items
-//   }
-
-const cartSelector = state => state.cart
+// const cartSelector = state => state.cart
 
 export const fetchOrderSaga = function* () {
   while (true) {

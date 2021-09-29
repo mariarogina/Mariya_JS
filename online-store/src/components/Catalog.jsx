@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchItems,
   fetchCategoriesRequest,
+  fetchItemsRequest,
   fetchCategories,
   fetchMore,
-  changeSearchField,
+  fetchMoreRequest
 } from "../actions/actionCreators";
 import Preloader from "./Preloader";
 import Error from "./Error";
@@ -14,19 +15,26 @@ import Search from "./Search";
 
 function Catalog({ location, history }) {
   const { items, categories, more } = useSelector((state) => state.catalog);
+  
   const { searchString } = useSelector((state) => state.search);
 
   const dispatch = useDispatch();
   const offset = items.data.length;
   const params = new URLSearchParams(location.search);
+  
 
   const setUrl = () =>
     history.replace(`${location.pathname}?${params.toString()}`);
 
+ 
+
   useEffect(() => {
+    
     if (params.has("offset")) params.delete("offset");
     dispatch(fetchCategoriesRequest());
-    dispatch(fetchItems(params));
+    dispatch(fetchItemsRequest(params));
+    
+    
   }, []);
 
   const handleClickCategory = (evt, id) => {
@@ -39,33 +47,29 @@ function Catalog({ location, history }) {
     }
     params.delete("offset");
     setUrl();
-    dispatch(fetchItems(params));
+    dispatch(fetchItemsRequest(params));
   };
 
   const handleMore = () => {
     params.set("offset", offset);
     setUrl();
-    dispatch(fetchMore(params));
+    dispatch(fetchMoreRequest(params));
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
     params.set("q", searchString);
     setUrl();
-    dispatch(fetchItems(params));
+    dispatch(fetchItemsRequest(params));
   };
 
   const handleChange = (evt) => {
-    dispatch(changeSearchField(evt.target.value));
+    dispatch(fetchItemsRequest(evt.target.value));
   };
-
-  if (categories.loading) return <Preloader />;
-
-  // if (categories.error) return <Error callback={dispatch(fetchCategoriesRequest())} />;
 
   return (
     <Fragment>
-      {location.pathname === "/catalog.html" && (
+      {location.pathname === "/catalog" && (
         <Search
           handleChange={handleChange}
           handleSubmit={handleSubmit}
@@ -78,7 +82,7 @@ function Catalog({ location, history }) {
           <NavLink
             to="#"
             isActive={() => !params.has("categoryId")}
-            onClick={(evt) => handleClickCategory(evt)}
+            onClick={(evt) => handleClickCategory(evt, null)}
             className="nav-link"
             activeClassName="active"
           >
@@ -100,10 +104,9 @@ function Catalog({ location, history }) {
         ))}
       </ul>
       {items.error ? (
-        // <Error callback={dispatch(fetchItems(params))} />
-        <div/>
+        <div></div>
       ) : (
-        items.data.length > 0 && (
+        items.data && items.data.length > 0 && (
           <div className="row">
             {items.data.map((item) => (
               <div className="col-4" key={item.id}>
@@ -126,7 +129,7 @@ function Catalog({ location, history }) {
                     <p className="card-text">{item.title}</p>
                     <p className="card-text">{item.price} руб.</p>
                     <Link
-                      to={`/products/${item.id}.html`}
+                      to={`/products/${item.id}`}
                       className="btn btn-outline-primary"
                     >
                       Заказать
@@ -152,7 +155,7 @@ function Catalog({ location, history }) {
       )}
     </Fragment>
   );
-}
+};
 
 const CatalogWithRouter = withRouter(Catalog);
 export default CatalogWithRouter;

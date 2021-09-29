@@ -6,7 +6,7 @@ import {
   SET_QUANTITY,
   SET_SIZE,
 } from "../actions/actionTypes"
-import {fetchTopSalesFailure, fetchItemSuccess} from '../actions/actionCreators'
+import {fetchItemFailure, fetchItemSuccess} from '../actions/actionCreators'
 
 import urls from '../constants'
 import {put, take} from 'redux-saga/effects'
@@ -90,7 +90,7 @@ export const fetchItemSaga = function* () {
       yield put(fetchItemSuccess(data))
 
     } catch (error) {
-      yield put(fetchTopSalesFailure(error))
+      yield put(fetchItemFailure(error))
     }
   }
 }

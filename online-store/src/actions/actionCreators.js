@@ -50,8 +50,9 @@ export const fetchTopSalesSuccess = items => ({
 
 
 //catalogue
-export const fetchItemsRequest = () => ({
+export const fetchItemsRequest = (params) => ({
   type: FETCH_ITEMS_REQUEST,
+  payload:params
 });
 
 export const fetchItemsFailure = errorItems => ({
@@ -69,6 +70,7 @@ export const fetchItemsSuccess = newItems => ({
 });
 
 export const fetchItems = search => async (dispatch) => {
+  debugger;
   dispatch(fetchItemsRequest());
 
   try {
@@ -128,8 +130,9 @@ export const fetchCategories = () => async (dispatch) => {
 };
 
 //catalogue more items
-export const fetchMoreRequest = () => ({
+export const fetchMoreRequest = (params) => ({
   type: FETCH_MORE_REQUEST,
+  payload:params
 });
 
 export const fetchMoreFailure = () => ({
@@ -237,6 +240,7 @@ export const fetchItem = (id) => async (dispatch) => {
     dispatch(fetchItemFailure(error.message));
   }
 };
+
 
 
 //Cart

@@ -15,6 +15,9 @@ import {all} from 'redux-saga/effects'
 import {fetchCategoriesSaga} from '../reducers/catalog'
 import {fetchTopSalesSaga} from '../reducers/topSales'
 import {fetchItemSaga} from '../reducers/catalogItem'
+import {fetchItemsSaga} from '../reducers/catalog'
+import {fetchMoreSaga} from '../reducers/catalog'
+
 
 
 const sagaMiddleware = createSagaMiddleware()
@@ -31,7 +34,9 @@ const rootSaga = function* rootSaga() {
   yield all([
     fetchCategoriesSaga(),
     fetchTopSalesSaga(),
-    fetchItemSaga()
+    fetchItemSaga(),
+    fetchItemsSaga(),
+    fetchMoreSaga()
   ])
 }
 
