@@ -21,6 +21,7 @@ function Catalog({ location, history }) {
   const dispatch = useDispatch();
   const offset = items.data.length;
   const params = new URLSearchParams(location.search);
+  
 
   const setUrl = () =>
     history.replace(`${location.pathname}?${params.toString()}`);
