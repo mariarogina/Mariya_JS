@@ -7,6 +7,7 @@ import {
   fetchItemsRequest,
   fetchCategories,
   fetchMore,
+  fetchMoreRequest
 } from "../actions/actionCreators";
 import Preloader from "./Preloader";
 import Error from "./Error";
@@ -51,7 +52,7 @@ function Catalog({ location, history }) {
   const handleMore = () => {
     params.set("offset", offset);
     setUrl();
-    dispatch(fetchMore(params));
+    dispatch(fetchMoreRequest(params));
   };
 
   const handleSubmit = (evt) => {

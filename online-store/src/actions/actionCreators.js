@@ -130,8 +130,9 @@ export const fetchCategories = () => async (dispatch) => {
 };
 
 //catalogue more items
-export const fetchMoreRequest = () => ({
+export const fetchMoreRequest = (params) => ({
   type: FETCH_MORE_REQUEST,
+  payload:params
 });
 
 export const fetchMoreFailure = () => ({

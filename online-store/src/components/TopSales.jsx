@@ -13,7 +13,7 @@ export default function TopSales() {
   useEffect(() => {
     dispatch(fetchTopSalesRequest());
   }, []);
-  console.log(items)
+  
   return (
     <Fragment>
       {loading && <Preloader />}

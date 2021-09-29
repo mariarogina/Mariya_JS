@@ -16,6 +16,7 @@ import {fetchCategoriesSaga} from '../reducers/catalog'
 import {fetchTopSalesSaga} from '../reducers/topSales'
 import {fetchItemSaga} from '../reducers/catalogItem'
 import {fetchItemsSaga} from '../reducers/catalog'
+import {fetchMoreSaga} from '../reducers/catalog'
 
 
 
@@ -34,7 +35,8 @@ const rootSaga = function* rootSaga() {
     fetchCategoriesSaga(),
     fetchTopSalesSaga(),
     fetchItemSaga(),
-    fetchItemsSaga()
+    fetchItemsSaga(),
+    fetchMoreSaga()
   ])
 }
 
