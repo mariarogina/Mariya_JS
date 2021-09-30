@@ -24,58 +24,56 @@ import {
   FETCH_ORDER_REQUEST,
   FETCH_ORDER_FAILURE,
   FETCH_ORDER_SUCCESS,
-  CHANGE_FORM_FIELD
-} from '../actions/actionTypes';
-import urls from '../constants';
-
+  CHANGE_FORM_FIELD,
+} from "../actions/actionTypes";
+import urls from "../constants";
 
 //Top-Sales
 export const fetchTopSalesRequest = () => ({
   type: FETCH_TOPSALES_REQUEST,
 });
 
-export const fetchTopSalesFailure = error => ({
+export const fetchTopSalesFailure = (error) => ({
   type: FETCH_TOPSALES_FAILURE,
   payload: {
     error,
   },
 });
 
-export const fetchTopSalesSuccess = items => ({
+export const fetchTopSalesSuccess = (items) => ({
   type: FETCH_TOPSALES_SUCCESS,
   payload: {
     items,
   },
 });
 
-
 //catalogue
 export const fetchItemsRequest = (params) => ({
   type: FETCH_ITEMS_REQUEST,
-  payload:params
+  payload: params,
 });
 
-export const fetchItemsFailure = errorItems => ({
+export const fetchItemsFailure = (errorItems) => ({
   type: FETCH_ITEMS_FAILURE,
   payload: {
     errorItems,
   },
 });
 
-export const fetchItemsSuccess = newItems => ({
+export const fetchItemsSuccess = (newItems) => ({
   type: FETCH_ITEMS_SUCCESS,
   payload: {
     newItems,
   },
 });
 
-export const fetchItems = search => async (dispatch) => {
+export const fetchItems = (search) => async (dispatch) => {
   debugger;
   dispatch(fetchItemsRequest());
 
   try {
     const response = await fetch(`${urls.items}?${search}`, {
-      mode: 'cors',
+      mode: "cors",
     });
 
     if (!response.ok) {
@@ -83,7 +81,7 @@ export const fetchItems = search => async (dispatch) => {
     }
 
     const data = await response.json();
-    
+
     dispatch(fetchItemsSuccess(data));
   } catch (error) {
     dispatch(fetchItemsFailure(error.message));
@@ -95,14 +93,14 @@ export const fetchCategoriesRequest = () => ({
   type: FETCH_CATEGORIES_REQUEST,
 });
 
-export const fetchCategoriesFailure = errorCategories => ({
+export const fetchCategoriesFailure = (errorCategories) => ({
   type: FETCH_CATEGORIES_FAILURE,
   payload: {
     errorCategories,
   },
 });
 
-export const fetchCategoriesSuccess = categories => ({
+export const fetchCategoriesSuccess = (categories) => ({
   type: FETCH_CATEGORIES_SUCCESS,
   payload: {
     categories,
@@ -114,7 +112,7 @@ export const fetchCategories = () => async (dispatch) => {
 
   try {
     const response = await fetch(urls.categories, {
-      mode: 'cors',
+      mode: "cors",
     });
 
     if (!response.ok) {
@@ -122,7 +120,7 @@ export const fetchCategories = () => async (dispatch) => {
     }
 
     const data = await response.json();
-    
+
     dispatch(fetchCategoriesSuccess(data));
   } catch (error) {
     dispatch(fetchCategoriesFailure(error.message));
@@ -132,88 +130,104 @@ export const fetchCategories = () => async (dispatch) => {
 //catalogue more items
 export const fetchMoreRequest = (params) => ({
   type: FETCH_MORE_REQUEST,
-  payload:params
+  payload: params,
 });
 
 export const fetchMoreFailure = () => ({
-  type: FETCH_MORE_FAILURE
+  type: FETCH_MORE_FAILURE,
 });
 
-export const fetchMoreSuccess = moreItems => ({
+export const fetchMoreSuccess = (moreItems) => ({
   type: FETCH_MORE_SUCCESS,
   payload: {
     moreItems,
   },
 });
 
-export const fetchMore = search => async (dispatch) => {
+export const fetchMore = (search) => async (dispatch) => {
   dispatch(fetchMoreRequest());
 
   try {
     const response = await fetch(`${urls.items}?${search}`, {
-
-    mode: 'cors',
+      mode: "cors",
     });
 
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    
+
     const data = await response.json();
     dispatch(fetchMoreSuccess(data));
   } catch (error) {
     dispatch(fetchMoreFailure());
-    console.log(error.message)
+    console.log(error.message);
   }
 };
 
 //Search
-export const changeSearchField = searchString => ({
+export const changeSearchField = (searchString) => ({
   type: CHANGE_SEARCH_FIELD,
   payload: {
     searchString,
   },
 });
 
-export const setSearching = () => ({
-  type: IS_SEARCHING,
-});
+export const setSearching = (search) => async (dispatch) => {
+  
+  try {
+    const response = await fetch(`${urls.items}?${search}`, {
+      mode: "cors",
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    const data = await response.json();
+    dispatch({
+      type: IS_SEARCHING,
+    });
+    dispatch(fetchItemsSuccess(data));
+  } catch (error) {
+    dispatch(fetchItemsFailure(error.message));
+  }
+};
 
 //catalogue item
 export const fetchItemRequest = (id) => ({
   type: FETCH_ITEM_REQUEST,
-  payload: id
+  payload: id,
 });
 
-export const fetchItemFailure = error => ({
+export const fetchItemFailure = (error) => ({
   type: FETCH_ITEM_FAILURE,
   payload: {
     error,
   },
 });
 
-export const fetchItemSuccess = item => ({
+export const fetchItemSuccess = (item) => ({
   type: FETCH_ITEM_SUCCESS,
   payload: {
     item,
   },
 });
 
-export const setAvalibleSizes = sizes => ({
+export const setAvalibleSizes = (sizes) => ({
   type: SET_AVALIBLE_SIZES,
   payload: {
     sizes,
   },
 });
 
-export const setQuantity = quantity => ({
+export const setQuantity = (quantity) => ({
   type: SET_QUANTITY,
   payload: {
     quantity,
   },
 });
 
-export const setSize = size => ({
+export const setSize = (size) => ({
   type: SET_SIZE,
   payload: {
     size,
@@ -222,10 +236,10 @@ export const setSize = size => ({
 
 export const fetchItem = (id) => async (dispatch) => {
   dispatch(fetchItemRequest());
-  
+
   try {
     const response = await fetch(`${urls.items}/${id}`, {
-      mode: 'cors',
+      mode: "cors",
     });
 
     if (!response.ok) {
@@ -233,7 +247,7 @@ export const fetchItem = (id) => async (dispatch) => {
     }
 
     const data = await response.json();
-    const filteredSizes = data.sizes.filter(item => item.avalible);
+    const filteredSizes = data.sizes.filter((item) => item.avalible);
     dispatch(setAvalibleSizes(filteredSizes));
     dispatch(fetchItemSuccess(data));
   } catch (error) {
@@ -241,10 +255,8 @@ export const fetchItem = (id) => async (dispatch) => {
   }
 };
 
-
-
 //Cart
-export const getCartItemsSuccess = cartItems => ({
+export const getCartItemsSuccess = (cartItems) => ({
   type: GET_CART_ITEMS_SUCCESS,
   payload: {
     cartItems,
@@ -260,7 +272,7 @@ export const changeFormField = (name, value) => ({
 });
 
 export const fetchOrderRequest = () => ({
-  type: FETCH_ORDER_REQUEST
+  type: FETCH_ORDER_REQUEST,
 });
 
 export const fetchOrderFailure = (error) => ({
@@ -271,10 +283,10 @@ export const fetchOrderFailure = (error) => ({
 });
 
 export const fetchOrderSuccess = () => ({
-  type: FETCH_ORDER_SUCCESS
+  type: FETCH_ORDER_SUCCESS,
 });
 
-export const setCartTotal = total => ({
+export const setCartTotal = (total) => ({
   type: SET_CART_TOTAL,
   payload: {
     total,
@@ -282,8 +294,10 @@ export const setCartTotal = total => ({
 });
 
 export const getCartTotal = () => (dispatch, getState) => {
-  const {cart: {cartItems}} = getState();
-  
+  const {
+    cart: { cartItems },
+  } = getState();
+
   if (!cartItems) {
     dispatch(setCartTotal(0));
     return;
@@ -298,29 +312,29 @@ export const getCartTotal = () => (dispatch, getState) => {
 };
 
 export const getCartItems = () => (dispatch) => {
-  
   const keys = Object.keys(localStorage);
   const cartItems = [];
-  for(let key of keys) {
+  for (let key of keys) {
     cartItems.push(JSON.parse(localStorage.getItem(key)));
   }
- 
+
   dispatch(getCartItemsSuccess(cartItems));
   // if (cartItems.length > 0) dispatch(getCartTotal())
-  
 };
 
 export const fetchOrder = () => async (dispatch, getState) => {
-  const {cart: {cartItems, owner}} = getState();
+  const {
+    cart: { cartItems, owner },
+  } = getState();
   dispatch(fetchOrderRequest());
-  
+
   const items = [];
-  cartItems.forEach(item => {
+  cartItems.forEach((item) => {
     items.push({
       id: item.id,
       price: item.price,
-      count: item.quantity
-    })
+      count: item.quantity,
+    });
   });
 
   const body = {
@@ -328,16 +342,16 @@ export const fetchOrder = () => async (dispatch, getState) => {
       phone: owner.phone,
       address: owner.address,
     },
-    items: items
-  }
-  
+    items: items,
+  };
+
   try {
     const response = await fetch(`${urls.order}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {

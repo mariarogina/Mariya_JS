@@ -5,7 +5,9 @@ import { changeSearchField, setSearching } from "../actions/actionCreators";
 import { useSelector, useDispatch } from "react-redux";
 import Search from "./Search";
 
-function Header({ history }) {
+function Header({ history, location}) {
+  
+  const params = new URLSearchParams(location.search);
   const { isSearching, searchString } = useSelector((state) => state.search);
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -13,8 +15,9 @@ function Header({ history }) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     if (searchString) {
+      params.set("q", searchString);
       history.replace(`/catalog?q=${searchString}`);
-      dispatch(setSearching());
+      dispatch(setSearching(params));
     }
   };
 

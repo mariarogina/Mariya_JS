@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { NavLink, Link, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -14,13 +14,16 @@ import Error from "./Error";
 import Search from "./Search";
 
 function Catalog({ location, history }) {
+
+  const params = new URLSearchParams(location.search);
+  const [activeCategory, setActiveCategory] = useState(params.has("categoryId")?params.get("categoryId"):null)
   const { items, categories, more } = useSelector((state) => state.catalog);
   
   const { searchString } = useSelector((state) => state.search);
 
   const dispatch = useDispatch();
   const offset = items.data.length;
-  const params = new URLSearchParams(location.search);
+ 
   
 
   const setUrl = () =>
@@ -39,12 +42,14 @@ function Catalog({ location, history }) {
 
   const handleClickCategory = (evt, id) => {
     evt.preventDefault();
-    if (evt.target.classList.contains("active")) return;
-    if (evt.target.text === "Все") {
+    if (id==activeCategory) return;
+    if (!activeCategory) {
       params.delete("categoryId");
     } else {
       params.set("categoryId", id);
     }
+    setActiveCategory(id)
+
     params.delete("offset");
     setUrl();
     dispatch(fetchItemsRequest(params));
@@ -81,7 +86,7 @@ function Catalog({ location, history }) {
         <li className="nav-item">
           <NavLink
             to="#"
-            isActive={() => !params.has("categoryId")}
+            isActive={() => !activeCategory}
             onClick={(evt) => handleClickCategory(evt, null)}
             className="nav-link"
             activeClassName="active"
@@ -90,10 +95,11 @@ function Catalog({ location, history }) {
           </NavLink>
         </li>
         {categories && categories.data && categories.data.length && categories.data.map((item) => (
+          
           <li className="nav-item" key={item.id}>
             <NavLink
               to="#"
-              isActive={() => params.get("categoryId") == item.id}
+              isActive={() => activeCategory == item.id}
               onClick={(evt) => handleClickCategory(evt, item.id)}
               className="nav-link"
               activeClassName="active"
