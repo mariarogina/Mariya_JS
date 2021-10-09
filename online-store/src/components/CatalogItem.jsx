@@ -1,6 +1,10 @@
 import React, { useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchItem, fetchItemRequest, setQuantity, setSize } from "../actions/actionCreators";
+import {
+  fetchItemRequest,
+  setQuantity,
+  setSize,
+} from "../actions/actionCreators";
 import Preloader from "./Preloader";
 
 export default function CatalogItem({ match, history }) {
@@ -42,12 +46,12 @@ export default function CatalogItem({ match, history }) {
         size: size,
       });
     }
+    // dispatch(action)
 
     history.push("/cart");
   };
 
   if (loading) return <Preloader />;
-
 
   return (
     <Fragment>

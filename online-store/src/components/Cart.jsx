@@ -5,6 +5,7 @@ import {
   getCartItems,
   changeFormField,
   fetchOrder,
+  fetchOrderRequest
 } from "../actions/actionCreators";
 
 export default function Cart() {
@@ -33,7 +34,7 @@ export default function Cart() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(fetchOrder());
+    dispatch(fetchOrderRequest());
   };
 
   if (success)

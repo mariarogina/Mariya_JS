@@ -88,6 +88,26 @@ export const fetchItemSaga = function* () {
       })
 
       yield put(fetchItemSuccess(data))
+      
+        // if (localStorage[`cartItem${id}_${size}`]) {
+        //   const updatedItem = JSON.parse(localStorage[`cartItem${id}_${size}`]);
+        //   updatedItem.quantity += 1;
+        //   localStorage[`cartItem${id}_${size}`] = JSON.stringify(updatedItem);
+        // } else {
+        //   localStorage[`cartItem${id}_${size}`] = JSON.stringify({
+        //     name: `cartItem${id}_${size}`,
+        //     id: Number(id),
+        //     link: match.url,
+        //     title: item.title,
+        //     price: item.price,
+        //     quantity: quantity,
+        //     size: size,
+        //   });
+        // }
+    
+      //   history.push("/cart");
+      // ;
+    
 
     } catch (error) {
       yield put(fetchItemFailure(error))
