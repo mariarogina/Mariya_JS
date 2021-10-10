@@ -71,27 +71,6 @@ export const fetchItemsSuccess = (newItems) => ({
   },
 });
 
-export const fetchItems = (search) => async (dispatch) => {
-  debugger;
-  dispatch(fetchItemsRequest());
-
-  try {
-    const response = await fetch(`${urls.items}?${search}`, {
-      mode: "cors",
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    const data = await response.json();
-
-    dispatch(fetchItemsSuccess(data));
-  } catch (error) {
-    dispatch(fetchItemsFailure(error.message));
-  }
-};
-
 //catalogue Categories
 export const fetchCategoriesRequest = () => ({
   type: FETCH_CATEGORIES_REQUEST,
@@ -111,26 +90,6 @@ export const fetchCategoriesSuccess = (categories) => ({
   },
 });
 
-export const fetchCategories = () => async (dispatch) => {
-  dispatch(fetchCategoriesRequest());
-
-  try {
-    const response = await fetch(urls.categories, {
-      mode: "cors",
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    const data = await response.json();
-
-    dispatch(fetchCategoriesSuccess(data));
-  } catch (error) {
-    dispatch(fetchCategoriesFailure(error.message));
-  }
-};
-
 //catalogue more items
 export const fetchMoreRequest = (params) => ({
   type: FETCH_MORE_REQUEST,
@@ -147,26 +106,6 @@ export const fetchMoreSuccess = (moreItems) => ({
     moreItems,
   },
 });
-
-export const fetchMore = (search) => async (dispatch) => {
-  dispatch(fetchMoreRequest());
-
-  try {
-    const response = await fetch(`${urls.items}?${search}`, {
-      mode: "cors",
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    const data = await response.json();
-    dispatch(fetchMoreSuccess(data));
-  } catch (error) {
-    dispatch(fetchMoreFailure());
-    console.log(error.message);
-  }
-};
 
 //Search
 export const changeSearchField = (searchString) => ({
@@ -237,27 +176,6 @@ export const setSize = (size) => ({
   },
 });
 
-export const fetchItem = (id) => async (dispatch) => {
-  dispatch(fetchItemRequest());
-
-  try {
-    const response = await fetch(`${urls.items}/${id}`, {
-      mode: "cors",
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    const data = await response.json();
-    const filteredSizes = data.sizes.filter((item) => item.avalible);
-    dispatch(setAvalibleSizes(filteredSizes));
-    dispatch(fetchItemSuccess(data));
-  } catch (error) {
-    dispatch(fetchItemFailure(error.message));
-  }
-};
-
 //Cart
 export const getCartItemsSuccess = (cartItems) => ({
   type: GET_CART_ITEMS_SUCCESS,
@@ -325,48 +243,6 @@ export const getCartItems = () => (dispatch) => {
   // if (cartItems.length > 0) dispatch(getCartTotal())
 };
 
-export const fetchOrder = () => async (dispatch, getState) => {
-  const {
-    cart: { cartItems, owner },
-  } = getState();
-  dispatch(fetchOrderRequest());
-
-  const items = [];
-  cartItems.forEach((item) => {
-    items.push({
-      id: item.id,
-      price: item.price,
-      count: item.quantity,
-    });
-  });
-
-  const body = {
-    owner: {
-      phone: owner.phone,
-      address: owner.address,
-    },
-    items: items,
-  };
-
-  try {
-    const response = await fetch(`${urls.order}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(body),
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-    localStorage.clear();
-    dispatch(fetchOrderSuccess());
-  } catch (error) {
-    dispatch(fetchOrderFailure(error.message));
-  }
-};
-
 export const addToCart = (id, title, size, price, amount) => ({
   type: ADD_TO_CART,
   payload: { id, title, size, price, amount },
@@ -377,11 +253,6 @@ export const removeFromCart = (id) => ({
   payload: { id },
 });
 
-export const clearCart = () => ({
-  type: CLEAR_CART,
-  payload: {},
-});
-
-const clearStorage = () => {
+export const clearStorage = () => {
   window.localStorage.removeItem(LOCAL_STORAGE_KEY);
 };
