@@ -4,6 +4,7 @@ import {
   fetchItemRequest,
   setQuantity,
   setSize,
+  addToCart,
 } from "../actions/actionCreators";
 import Preloader from "./Preloader";
 

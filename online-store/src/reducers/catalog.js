@@ -9,8 +9,6 @@ import {
   FETCH_MORE_FAILURE,
   FETCH_MORE_SUCCESS,
 } from "../actions/actionTypes";
-import {put, take} from "redux-saga/effects"
-import urls from "../constants"
 
 const initialState = {
   items: {
@@ -55,7 +53,7 @@ export default function catalogReducer(state = initialState, action) {
         },
       };
     case FETCH_ITEMS_SUCCESS:
-      const  newItems  = action.payload;
+      const newItems = action.payload;
       return {
         ...state,
         items: {
@@ -86,7 +84,7 @@ export default function catalogReducer(state = initialState, action) {
         },
       };
     case FETCH_CATEGORIES_SUCCESS:
-      const  categories  = action.payload;
+      const categories = action.payload;
       return {
         ...state,
         categories: {
@@ -120,7 +118,7 @@ export default function catalogReducer(state = initialState, action) {
         },
       };
     case FETCH_MORE_SUCCESS:
-      const  moreItems  = action.payload;
+      const moreItems = action.payload;
       moreItems.forEach((o) => state.items.data.push(o));
       return {
         ...state,
@@ -137,95 +135,3 @@ export default function catalogReducer(state = initialState, action) {
       return state;
   }
 }
-
-export const fetchCategoriesSaga = function* () {
-  
-  while(true) {
-    yield take(FETCH_CATEGORIES_REQUEST)
-    try {
-      const response = yield fetch(urls.categories, {
-        mode: 'cors',
-      });
-
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-
-      const data = yield response.json();
-      console.log(data)
-
-      yield put({
-        type: FETCH_CATEGORIES_SUCCESS,
-        payload: data
-      })
-
-    } catch (error) {
-      yield put({
-        type: FETCH_CATEGORIES_FAILURE,
-        payload: error.message
-      })
-    }
-  }
-}
-
-export const fetchItemsSaga = function* () {
-  
-  while(true) {
-    const {payload} = yield take(FETCH_ITEMS_REQUEST)
-    try {
-      const response = yield fetch(`${urls.items}?${payload}`, {
-        mode: 'cors',
-      });
-
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-
-      const data = yield response.json();
-      console.log(data)
-
-      yield put({
-        type: FETCH_ITEMS_SUCCESS,
-        payload: data
-      })
-
-    } catch (error) {
-      yield put({
-        type: FETCH_ITEMS_FAILURE,
-        payload: error.message
-      })
-    }
-  }
-}
-
-export const fetchMoreSaga = function* () {
-  
-  while(true) {
-    const {payload} = yield take(FETCH_MORE_REQUEST)
-    try {
-      const response = yield fetch(`${urls.items}?${payload}`, {
-  
-      mode: 'cors',
-      });
-
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-
-      const data = yield response.json();
-      console.log(data)
-
-      yield put({
-        type: FETCH_MORE_SUCCESS,
-        payload: data
-      })
-
-    } catch (error) {
-      yield put({
-        type: FETCH_MORE_FAILURE,
-        payload: error.message
-      })
-    }
-  }
-}
-

@@ -7,14 +7,17 @@ import cartReducer from "../reducers/cart";
 import thunk from "redux-thunk";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
-import { fetchCategoriesSaga } from "../reducers/catalog";
-import { fetchTopSalesSaga } from "../reducers/topSales";
-import { fetchItemSaga } from "../reducers/catalogItem";
-import { fetchItemsSaga } from "../reducers/catalog";
-import { fetchMoreSaga } from "../reducers/catalog";
-import { fetchOrderSaga } from "../reducers/cart";
-import { saveState } from "./localStorage";
-import { loadState } from "./localStorage";
+import { fetchCategoriesSaga } from "../sagas/sagas";
+import { fetchTopSalesSaga } from "../sagas/sagas";
+import { fetchItemSaga } from "../sagas/sagas";
+import { fetchItemsSaga } from "../sagas/sagas";
+import { fetchMoreSaga } from "../sagas/sagas";
+import { fetchOrderSaga } from "../sagas/sagas";
+
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+import { composeWithDevTools } from "redux-devtools-extension";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -25,6 +28,13 @@ const reducer = combineReducers({
   catalogItem: catalogItemReducer,
   cart: cartReducer,
 });
+
+const persistConfig = {
+  key: "cart",
+  storage: storage,
+  whitelist: ["authType"], // which reducer want to store
+};
+const pReducer = persistReducer(persistConfig, reducer);
 
 const rootSaga = function* rootSaga() {
   yield all([
@@ -37,23 +47,13 @@ const rootSaga = function* rootSaga() {
   ]);
 };
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const persistedState = loadState();
+const middlewares = [thunk, sagaMiddleware];
 
-const store = createStore(
-  reducer,
-  persistedState,
-  composeEnhancers(applyMiddleware(thunk, sagaMiddleware))
-);
+const enhancer = compose(composeWithDevTools(applyMiddleware(...middlewares)));
 
-store.subscribe(() => {
-  saveState({
-    cart: store.getState().cart,
-  });
-});
-
-console.log(persistedState);
+const store = createStore(reducer, enhancer);
 
 sagaMiddleware.run(rootSaga);
 
-export default store;
+const persistor = persistStore(store);
+export { persistor, store };

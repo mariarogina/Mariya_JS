@@ -15,6 +15,7 @@ import {
   FETCH_MORE_FAILURE,
   FETCH_MORE_SUCCESS,
   CHANGE_SEARCH_FIELD,
+  CHANGE_FORM_FIELD,
   IS_SEARCHING,
   SET_AVALIBLE_SIZES,
   SET_QUANTITY,
@@ -24,9 +25,12 @@ import {
   FETCH_ORDER_REQUEST,
   FETCH_ORDER_FAILURE,
   FETCH_ORDER_SUCCESS,
-  CHANGE_FORM_FIELD,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  CLEAR_CART,
 } from "../actions/actionTypes";
 import urls from "../constants";
+import LOCAL_STORAGE_KEY from "../constant";
 
 //Top-Sales
 export const fetchTopSalesRequest = () => ({
@@ -173,7 +177,6 @@ export const changeSearchField = (searchString) => ({
 });
 
 export const setSearching = (search) => async (dispatch) => {
-  
   try {
     const response = await fetch(`${urls.items}?${search}`, {
       mode: "cors",
@@ -362,4 +365,23 @@ export const fetchOrder = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch(fetchOrderFailure(error.message));
   }
+};
+
+export const addToCart = (id, title, size, price, amount) => ({
+  type: ADD_TO_CART,
+  payload: { id, title, size, price, amount },
+});
+
+export const removeFromCart = (id) => ({
+  type: REMOVE_FROM_CART,
+  payload: { id },
+});
+
+export const clearCart = () => ({
+  type: CLEAR_CART,
+  payload: {},
+});
+
+const clearStorage = () => {
+  window.localStorage.removeItem(LOCAL_STORAGE_KEY);
 };

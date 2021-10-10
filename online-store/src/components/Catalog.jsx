@@ -2,53 +2,44 @@ import React, { useEffect, Fragment, useState } from "react";
 import { NavLink, Link, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  fetchItems,
   fetchCategoriesRequest,
   fetchItemsRequest,
-  fetchCategories,
-  fetchMore,
-  fetchMoreRequest
+  fetchMoreRequest,
 } from "../actions/actionCreators";
 import Preloader from "./Preloader";
 import Error from "./Error";
 import Search from "./Search";
 
 function Catalog({ location, history }) {
-
   const params = new URLSearchParams(location.search);
-  const [activeCategory, setActiveCategory] = useState(params.has("categoryId")?params.get("categoryId"):null)
+  const [activeCategory, setActiveCategory] = useState(
+    params.has("categoryId") ? params.get("categoryId") : null
+  );
   const { items, categories, more } = useSelector((state) => state.catalog);
-  
+
   const { searchString } = useSelector((state) => state.search);
 
   const dispatch = useDispatch();
   const offset = items.data.length;
- 
-  
 
   const setUrl = () =>
     history.replace(`${location.pathname}?${params.toString()}`);
 
- 
-
   useEffect(() => {
-    
     if (params.has("offset")) params.delete("offset");
     dispatch(fetchCategoriesRequest());
     dispatch(fetchItemsRequest(params));
-    
-    
   }, []);
 
   const handleClickCategory = (evt, id) => {
     evt.preventDefault();
-    if (id==activeCategory) return;
+    if (id == activeCategory) return;
     if (!activeCategory) {
       params.delete("categoryId");
     } else {
       params.set("categoryId", id);
     }
-    setActiveCategory(id)
+    setActiveCategory(id);
 
     params.delete("offset");
     setUrl();
@@ -94,25 +85,28 @@ function Catalog({ location, history }) {
             Все
           </NavLink>
         </li>
-        {categories && categories.data && categories.data.length && categories.data.map((item) => (
-          
-          <li className="nav-item" key={item.id}>
-            <NavLink
-              to="#"
-              isActive={() => activeCategory == item.id}
-              onClick={(evt) => handleClickCategory(evt, item.id)}
-              className="nav-link"
-              activeClassName="active"
-            >
-              {item.title}
-            </NavLink>
-          </li>
-        ))}
+        {categories &&
+          categories.data &&
+          categories.data.length &&
+          categories.data.map((item) => (
+            <li className="nav-item" key={item.id}>
+              <NavLink
+                to="#"
+                isActive={() => activeCategory == item.id}
+                onClick={(evt) => handleClickCategory(evt, item.id)}
+                className="nav-link"
+                activeClassName="active"
+              >
+                {item.title}
+              </NavLink>
+            </li>
+          ))}
       </ul>
       {items.error ? (
         <div></div>
       ) : (
-        items.data && items.data.length > 0 && (
+        items.data &&
+        items.data.length > 0 && (
           <div className="row">
             {items.data.map((item) => (
               <div className="col-4" key={item.id}>
@@ -161,7 +155,7 @@ function Catalog({ location, history }) {
       )}
     </Fragment>
   );
-};
+}
 
 const CatalogWithRouter = withRouter(Catalog);
 export default CatalogWithRouter;
