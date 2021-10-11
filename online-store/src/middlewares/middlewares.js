@@ -1,40 +1,11 @@
-import {
-  ADD_TABLE_ROW,
-  TABLE_EDIT,
-  REMOVE_TABLE_DATA,
-  FETCH_TABLE_DATA,
-} from "../ducks/table";
+import {CHANGE_FORM_FIELD, FETCH_ORDER_REQUEST, GET_CART_ITEMS_SUCCESS, SET_CART_TOTAL} from "../actions/actionTypes"
 
-const useActionTypes = [ADD_TABLE_ROW, TABLE_EDIT, REMOVE_TABLE_DATA];
-
-const apiList = () => ({
-  [FETCH_TABLE_DATA]: {
-    url: "https://gist.githubusercontent.com/mariarogina/1bf4e1947ec2fc1e8ded4882e57f4d69/raw/89eb2570fcfd69f31c4dfd21f5f49733fe0bb4d0/countriesdata.json",
-    selector: (data) => data,
-  },
-});
+const useActionTypes = [GET_CART_ITEMS_SUCCESS, CHANGE_FORM_FIELD, SET_CART_TOTAL, FETCH_ORDER_REQUEST];
 
 export const persistMiddleware = (storeApi) => (next) => (action) => {
   if (useActionTypes.includes(action.type)) {
-    window.localStorage.setItem("table", JSON.stringify(action.payload));
-  }
-
-  return next(action);
-};
-
-export const fetchMiddleware = (storeAPI) => (next) => (action) => {
-  if (action.type.includes("REQUEST")) {
-    const getApi = apiList(action.payload)[action.type.replace("_REQUEST", "")];
-    console.log(getApi.url);
-
-    fetch(
-      "https://gist.githubusercontent.com/mariarogina/1bf4e1947ec2fc1e8ded4882e57f4d69/raw/89eb2570fcfd69f31c4dfd21f5f49733fe0bb4d0/countriesdata.json"
-    ).then((data) => {
-      storeAPI.dispatch({
-        type: action.type.replace("REQUEST", "SUCCESS"),
-        payload: getApi.selector(data),
-      });
-    });
+    const cartData = storeApi.getState()['cart']
+    window.localStorage.setItem("cart", JSON.stringify(cartData));
   }
 
   return next(action);

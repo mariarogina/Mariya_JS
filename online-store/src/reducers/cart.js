@@ -14,7 +14,7 @@ import LOCAL_STORAGE_KEY from "../constant";
 
 import { clearStorage } from "../actions/actionCreators";
 
-const initialState = {
+const initialState = window.localStorage.getItem('cart') ? JSON.parse(window.localStorage.getItem('cart')) : {
   cartItems: null,
   totalSum: null,
   loading: false,
@@ -25,6 +25,7 @@ const initialState = {
 
 console.log(initialState);
 export default function cartReducer(state = initialState, action) {
+  console.log(action);
   switch (action.type) {
     case GET_CART_ITEMS_SUCCESS:
       const { cartItems } = action.payload;

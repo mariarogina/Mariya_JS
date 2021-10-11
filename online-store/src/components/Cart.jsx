@@ -71,7 +71,7 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            {cartItems &&
+            {cartItems && cartItems.length &&
               cartItems.map((o, index) => (
                 <tr key={index}>
                   <th scope="row">{index + 1}</th>
@@ -104,7 +104,7 @@ export default function Cart() {
           </tbody>
         </table>
       </section>
-      {cartItems && (
+      {cartItems && cartItems.length && (
         <section className="order">
           <h2 className="text-center">Оформить заказ</h2>
           <div className="card" style={{ maxWidth: "30rem", margin: "0 auto" }}>
