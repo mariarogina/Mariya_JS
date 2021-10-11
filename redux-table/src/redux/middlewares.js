@@ -4,7 +4,6 @@ import {
   REMOVE_TABLE_DATA,
   FETCH_TABLE_DATA,
 } from "../ducks/table";
-import axios from "axios";
 
 const useActionTypes = [ADD_TABLE_ROW, TABLE_EDIT, REMOVE_TABLE_DATA];
 
