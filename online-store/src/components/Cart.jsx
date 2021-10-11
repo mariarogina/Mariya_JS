@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import {
   getCartItems,
   changeFormField,
-  fetchOrder,
+  fetchOrderRequest,
+  removeFromCart,
 } from "../actions/actionCreators";
 
 export default function Cart() {
@@ -12,7 +13,6 @@ export default function Cart() {
     (state) => state.cart
   );
 
-  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,8 +24,6 @@ export default function Cart() {
     dispatch(getCartItems());
   };
 
-  
-
   const handleChange = (evt) => {
     const { id, value } = evt.target;
     dispatch(changeFormField(id, value));
@@ -33,7 +31,7 @@ export default function Cart() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(fetchOrder());
+    dispatch(fetchOrderRequest());
   };
 
   if (success)
@@ -46,7 +44,7 @@ export default function Cart() {
       </section>
     );
 
-  if (!cartItems || cartItems.length==0 )
+  if (!cartItems || cartItems.length == 0)
     return (
       <section className="cart text-center">
         <p>Вы еще ничего не выбрали</p>
@@ -88,8 +86,8 @@ export default function Cart() {
                     <button
                       className="btn btn-outline-danger btn-sm"
                       onClick={() => {
-                        handleRemove(o.name)}}
-                      
+                        handleRemove(o.name);
+                      }}
                     >
                       Удалить
                     </button>
@@ -106,7 +104,7 @@ export default function Cart() {
           </tbody>
         </table>
       </section>
-      {cartItems &&  (
+      {cartItems && (
         <section className="order">
           <h2 className="text-center">Оформить заказ</h2>
           <div className="card" style={{ maxWidth: "30rem", margin: "0 auto" }}>

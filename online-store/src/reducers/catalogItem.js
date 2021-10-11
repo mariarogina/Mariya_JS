@@ -5,11 +5,8 @@ import {
   SET_AVALIBLE_SIZES,
   SET_QUANTITY,
   SET_SIZE,
-} from "../actions/actionTypes"
-import {fetchItemFailure, fetchItemSuccess} from '../actions/actionCreators'
-
-import urls from '../constants'
-import {put, take} from 'redux-saga/effects'
+} from "../actions/actionTypes";
+import { fetchItemFailure, fetchItemSuccess } from "../actions/actionCreators";
 
 const initialState = {
   item: null,
@@ -18,7 +15,7 @@ const initialState = {
   error: null,
   quantity: 1,
   size: null,
-}
+};
 
 export default function catalogItemReducer(state = initialState, action) {
   switch (action.type) {
@@ -26,71 +23,43 @@ export default function catalogItemReducer(state = initialState, action) {
       return {
         ...initialState,
         loading: true,
-      }
+      };
     case FETCH_ITEM_FAILURE:
-      const {error} = action.payload
+      const { error } = action.payload;
       return {
         ...state,
         loading: false,
         error,
-      }
+      };
     case FETCH_ITEM_SUCCESS:
-      const {item} = action.payload
+      const { item } = action.payload;
       return {
         ...state,
         item,
         loading: false,
         error: null,
-      }
+      };
     case SET_AVALIBLE_SIZES:
-      const sizes = action.payload
+      const sizes = action.payload;
       return {
         ...state,
         avalibleSizes: sizes,
         loading: false,
         error: null,
-      }
+      };
     case SET_QUANTITY:
-      const {quantity} = action.payload
+      const { quantity } = action.payload;
       return {
         ...state,
         quantity,
-      }
+      };
     case SET_SIZE:
-      const {size} = action.payload
+      const { size } = action.payload;
       return {
         ...state,
         size,
-      }
+      };
     default:
-      return state
-  }
-}
-
-export const fetchItemSaga = function* () {
-  while (true) {
-    const {payload} = yield take(FETCH_ITEM_REQUEST)
-    try {
-      const response = yield fetch(`${urls.items}/${payload}`, {
-        mode: "cors",
-      })
-
-      if (!response.ok) {
-        throw new Error(response.statusText)
-      }
-
-      const data = yield response.json()
-      const filteredSizes = data.sizes.filter((item) => item.avalible)
-
-      yield put({
-        type: SET_AVALIBLE_SIZES,
-        payload: filteredSizes,
-      })
-
-      yield put(fetchItemSuccess(data))
-
-    } catch (error) {
-      yield put(fetchItemFailure(error))
-    }
+      return state;
   }
 }
